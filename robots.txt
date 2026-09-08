@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /design-system/
+Disallow: /raw/
+Disallow: /store/
+Disallow: /trailer/clips/
+Disallow: /trailer/refs/
+
+Sitemap: https://snowops.game/sitemap.xml

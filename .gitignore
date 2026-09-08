@@ -1,0 +1,11 @@
+.DS_Store
+.playwright-mcp/
+*.jpg.tmp
+# сырые PNG из генератора, 18 МБ, пересоздаются tools/qwen_image.py
+raw/
+# бандл для Claude Design, пересобирается tools/build_design_system.py
+design-system/
+# видео трейлера собирается локально, в репозиторий не тащим
+trailer/clips/*.mp4
+trailer/audio/*.mp3
+trailer/audio/*.wav

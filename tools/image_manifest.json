@@ -1,0 +1,74 @@
+{
+  "_comment": "Размеры qwen-image: 1664*928 (16:9), 1472*1140 (4:3), 1328*1328 (1:1), 1140*1472, 928*1664 (9:16). Финальные размеры для сторов делает ffmpeg в outputs.vf. Герой везде описан одинаково, чтобы держать консистентность без image-edit.",
+  "hero": "A lone operative in a white winter camouflage jacket with a hood, black balaclava covering the face, tactical chest rig with pouches and a small amber indicator light, snow dusting the shoulders.",
+  "items": [
+    {
+      "id": "shot-01",
+      "note": "уже сгенерирован пробным запросом, оставлен для --force",
+      "size": "1664*928",
+      "prompt": "A lone operative in a white winter camouflage jacket with a hood, black balaclava, tactical chest rig, kneeling in deep snow beside railway tracks at night, looking toward concrete bunkers and a radio tower with a red beacon in the distance, boot tracks behind him.",
+      "outputs": [
+        { "path": "assets/img/shots/01.jpg", "vf": "scale=1600:-2" }
+      ]
+    },
+    {
+      "id": "shot-02",
+      "size": "1664*928",
+      "prompt": "Low angle from the snow: a rusty freight train with steel boxcars rolls past at night toward a snowbound military base, wheels throwing snow spray, the operative in white winter camouflage and black balaclava clinging to the ladder of the last wagon, red tower beacon far ahead.",
+      "outputs": [
+        { "path": "assets/img/shots/02.jpg", "vf": "scale=1600:-2" }
+      ]
+    },
+    {
+      "id": "shot-03",
+      "size": "1664*928",
+      "prompt": "Perimeter of a snowbound military base at night: a tall searchlight tower sweeps a hard white beam across chain-link fence and drifts of snow, the operative in white winter camouflage pressed flat against a frost-covered concrete wall in the shadow just outside the beam, a guard silhouette with a rifle on the walkway above.",
+      "outputs": [
+        { "path": "assets/img/shots/03.jpg", "vf": "scale=1600:-2" }
+      ]
+    },
+    {
+      "id": "shot-04",
+      "size": "1664*928",
+      "prompt": "Looking up from the base of a tall steel lattice radio tower at night, red beacon glowing through blowing snow at the top, the operative in white winter camouflage climbing the icy ladder halfway up, wind-driven snow streaking across the frame, mountains and aurora faintly behind.",
+      "outputs": [
+        { "path": "assets/img/shots/04.jpg", "vf": "scale=1600:-2" }
+      ]
+    },
+    {
+      "id": "shot-05",
+      "size": "1664*928",
+      "prompt": "Interior of a dim concrete vehicle garage at a snowbound military base, a military 6x6 truck with headlights on and exhaust steaming, the wide steel garage door half open onto a blizzard, the operative in white winter camouflage crouched behind stacked crates in the foreground, a single hanging work lamp.",
+      "outputs": [
+        { "path": "assets/img/shots/05.jpg", "vf": "scale=1600:-2" }
+      ]
+    },
+    {
+      "id": "og",
+      "note": "OG-картинка сайта 1200x630 и hero-poster для видео",
+      "size": "1664*928",
+      "prompt": "Wide establishing shot of a snowbound military base at night seen from a ridge: railway curving toward concrete bunkers, radio tower with a red beacon, a truck with headlights, the operative in white winter camouflage in the foreground seen from behind, lying prone with binoculars, empty sky area at the top left for a title.",
+      "outputs": [
+        { "path": "assets/img/og.jpg", "vf": "scale=1200:-2,crop=1200:630" }
+      ]
+    },
+    {
+      "id": "feature-graphic",
+      "note": "Google Play feature graphic 1024x500, без текста (название добавит стор)",
+      "size": "1664*928",
+      "prompt": "Cinematic wide banner composition: the operative in white winter camouflage and black balaclava in a three-quarter portrait on the right, looking left, a snowbound military base with a red-beacon radio tower small in the left distance, heavy snowfall, calm empty space on the left third.",
+      "outputs": [
+        { "path": "store/google-play/feature-graphic-1024x500.jpg", "vf": "scale=1024:-2,crop=1024:500", "q": 2 }
+      ]
+    },
+    {
+      "id": "icon-alt",
+      "note": "Запасная иконка 512x512, если текущая не пройдёт; текущая лежит в assets/img/icon-512.png",
+      "size": "1328*1328",
+      "prompt": "App icon composition, centered bust of the operative in a white winter camouflage hood and black balaclava, snow on the shoulders, small amber indicator light on the chest rig, dark blue blizzard background, strong simple silhouette readable at small size.",
+      "outputs": [
+        { "path": "store/icon-alt-512.png", "vf": "scale=512:512" }
+      ]
+    }
+  ]
+}
