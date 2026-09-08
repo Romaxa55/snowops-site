@@ -850,6 +850,24 @@ p + p {
   margin-top: 4px;
 }
 
+.alpha__how {
+  color: var(--ice);
+  font-size: 0.95rem;
+  max-width: var(--measure);
+}
+
+.stores-later {
+  margin-top: 40px;
+  margin-bottom: 14px;
+  color: var(--ice);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.stores--muted .store {
+  background: transparent;
+}
+
 .download__note {
   margin-top: 28px;
   color: var(--ice);
