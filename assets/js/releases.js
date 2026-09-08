@@ -12,7 +12,7 @@
   var platforms = [
     { key: 'android', label: 'Android', hint: 'APK, arm64, Android 8.0 и новее' },
     { key: 'windows', label: 'Windows', hint: 'zip, x86_64, Windows 10 и новее' },
-    { key: 'linux', label: 'Linux', hint: 'tar.gz, x86_64' },
+    { key: 'linux', label: 'Linux', hint: 'tar.gz, x86_64 и arm64 в одном архиве' },
     { key: 'macos', label: 'macOS', hint: 'zip, universal, macOS 11 и новее' }
   ];
 
@@ -65,7 +65,7 @@
       var frag = document.createDocumentFragment();
       platforms.forEach(function (p) {
         var asset = (rel.assets || []).filter(function (a) {
-          return a.name.indexOf('-' + p.key + '-') !== -1 && isOurs(a.browser_download_url);
+          return new RegExp('-' + p.key + '[.-]').test(a.name) && isOurs(a.browser_download_url);
         })[0];
         if (!asset) return;
         var a = el('a', { class: 'store', href: asset.browser_download_url });
