@@ -821,6 +821,35 @@ p + p {
   margin-top: 2px;
 }
 
+.alpha {
+  margin-top: 40px;
+  padding: 28px clamp(20px, 3vw, 32px);
+  border: 1px solid var(--rail);
+  border-left: 3px solid var(--lamp);
+  border-radius: var(--radius);
+  background: var(--night-2);
+  display: grid;
+  gap: 16px;
+}
+
+.alpha h3 {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.alpha__meta {
+  color: var(--ice);
+  max-width: var(--measure);
+}
+
+.alpha__meta a {
+  color: var(--snow);
+}
+
+.alpha .stores {
+  margin-top: 4px;
+}
+
 .download__note {
   margin-top: 28px;
   color: var(--ice);
