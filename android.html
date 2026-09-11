@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SnowOps для Android — скачать</title>
+  <meta name="description" content="Скачать SnowOps для Android: QR-код и прямая ссылка на последнюю сборку. Download SnowOps for Android: QR code and a direct link to the latest build.">
+  <meta name="theme-color" content="#0b1420">
+  <link rel="canonical" href="https://snowops.game/android.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SnowOps">
+  <meta property="og:title" content="SnowOps для Android">
+  <meta property="og:description" content="Наведите камеру телефона и скачайте последнюю сборку.">
+  <meta property="og:url" content="https://snowops.game/android.html">
+  <meta property="og:image" content="https://snowops.game/assets/img/og.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/fonts.css">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <style>
+    /* Страница-одностраничник: всё живёт в одной карточке по центру. */
+    .get { padding: 48px 0 64px; }
+    .get__card {
+      max-width: 520px; margin: 0 auto; text-align: center;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .10);
+      border-radius: 18px; padding: 32px 28px;
+    }
+    .get__qr {
+      background: #fff; border-radius: 12px; padding: 12px;
+      display: inline-block; line-height: 0; margin: 8px 0 14px;
+    }
+    .get__qr canvas { width: 240px; height: 240px; display: block; }
+    .get__scan { font-size: 15px; opacity: .72; margin: 0 0 22px; }
+    .get__meta { font-size: 14px; opacity: .66; margin: 14px 0 0; }
+    .get__meta span { display: block; }
+    .get__btn { width: 100%; max-width: 320px; }
+    .get__btn.is-waiting { opacity: .6; pointer-events: none; }
+    .get__steps {
+      text-align: left; max-width: 420px; margin: 26px auto 0;
+      padding-left: 20px; font-size: 15px; line-height: 1.6; opacity: .82;
+    }
+    .get__steps li { margin: 6px 0; }
+    .get__note { font-size: 14px; opacity: .6; margin-top: 22px; }
+    .get__lang { margin-top: 26px; font-size: 14px; opacity: .6; }
+    .get__lang a { color: inherit; }
+    @media (max-width: 480px) {
+      .get__qr canvas { width: 200px; height: 200px; }
+      .get__card { padding: 26px 18px; }
+    }
+  </style>
+</head>
+<body class="page-legal">
+
+<nav class="nav" id="nav" aria-label="Основная навигация">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="SnowOps, на главную">
+      <span class="brand__mark">
+        <img src="assets/img/icon-192.png" alt="" width="34" height="34">
+        <span class="brand__beacon" aria-hidden="true"></span>
+      </span>
+      SnowOps
+    </a>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links">Меню</button>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="index.html#about">Об игре</a></li>
+      <li><a href="index.html#download">Скачать</a></li>
+      <li><a href="support.html">Поддержка</a></li>
+      <li><a href="privacy.html">Конфиденциальность</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="get">
+    <div class="wrap">
+      <div class="get__card">
+        <h1 data-t="title">SnowOps для Android</h1>
+
+        <div class="get__qr">
+          <canvas id="qr" width="240" height="240" role="img"
+                  aria-label="QR-код со ссылкой на эту страницу"></canvas>
+        </div>
+        <p class="get__scan" data-t="scan">Наведите камеру телефона</p>
+
+        <a class="btn btn--primary get__btn is-waiting" id="get"
+           href="https://github.com/Romaxa55/snowops-site/releases/latest"
+           rel="noopener">Ищем последнюю сборку…</a>
+
+        <p class="get__meta">
+          <span id="version"></span>
+          <span id="size"></span>
+        </p>
+
+        <ol class="get__steps" id="steps"></ol>
+
+        <p class="get__note" data-t="note">Сборка ранняя: это демонстрация одной миссии.</p>
+
+        <p class="get__lang">
+          <a href="?lang=ru">Русский</a> · <a href="?lang=en">English</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__row">
+      <ul class="footer__links">
+        <li><a href="privacy.html">Политика конфиденциальности</a></li>
+        <li><a href="terms.html">Пользовательское соглашение</a></li>
+        <li><a href="support.html">Поддержка</a></li>
+      </ul>
+      <span class="age" title="Возрастная категория 16+">16+</span>
+    </div>
+    <p class="footer__legal">© 2026 SnowOps. Все права на игру, её название и материалы сайта принадлежат разработчику.</p>
+  </div>
+</footer>
+
+<script src="assets/js/qrcode.js"></script>
+<script src="assets/js/android.js" defer></script>
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>
