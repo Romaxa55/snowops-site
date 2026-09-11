@@ -244,6 +244,30 @@ p + p {
   }
 }
 
+/* Переключатель языка в шапке: не ещё одна ссылка меню, а рамка с кодом
+   языка, чтобы глаз отличал его от разделов сайта. */
+.nav__lang a {
+  border: 1px solid var(--rail);
+  border-radius: var(--radius);
+  padding: 5px 10px;
+  font-size: 0.85rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  opacity: .85;
+}
+
+.nav__lang a:hover {
+  opacity: 1;
+  border-color: var(--ice);
+}
+
+@media (max-width: 820px) {
+  .nav__lang a {
+    display: inline-block;
+    margin: 8px var(--gutter) 4px;
+  }
+}
+
 /* ---------- Кнопки ---------- */
 
 .btn {

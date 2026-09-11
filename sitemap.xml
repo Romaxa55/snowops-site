@@ -1,8 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schema/sitemap/0.9">
-  <url><loc>https://snowops.game/</loc><lastmod>2026-09-08</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://snowops.game/privacy.html</loc><lastmod>2026-09-08</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://snowops.game/terms.html</loc><lastmod>2026-09-08</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://snowops.game/data-deletion.html</loc><lastmod>2026-09-08</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://snowops.game/support.html</loc><lastmod>2026-09-08</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+<urlset xmlns="http://www.sitemaps.org/schema/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://snowops.game/</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://snowops.game/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://snowops.game/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://snowops.game/"/></url>
+  <url><loc>https://snowops.game/en/</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://snowops.game/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://snowops.game/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://snowops.game/"/></url>
+  <url><loc>https://snowops.game/privacy.html</loc><lastmod>2026-09-11</lastmod><changefreq>yearly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://snowops.game/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://snowops.game/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://snowops.game/privacy.html"/></url>
+  <url><loc>https://snowops.game/en/privacy.html</loc><lastmod>2026-09-11</lastmod><changefreq>yearly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://snowops.game/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://snowops.game/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://snowops.game/privacy.html"/></url>
+  <url><loc>https://snowops.game/terms.html</loc><lastmod>2026-09-11</lastmod><changefreq>yearly</changefreq><priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://snowops.game/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://snowops.game/en/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://snowops.game/terms.html"/></url>
+  <url><loc>https://snowops.game/en/terms.html</loc><lastmod>2026-09-11</lastmod><changefreq>yearly</changefreq><priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://snowops.game/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://snowops.game/en/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://snowops.game/terms.html"/></url>
+  <url><loc>https://snowops.game/data-deletion.html</loc><lastmod>2026-09-11</lastmod><changefreq>yearly</changefreq><priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://snowops.game/data-deletion.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://snowops.game/en/data-deletion.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://snowops.game/data-deletion.html"/></url>
+  <url><loc>https://snowops.game/en/data-deletion.html</loc><lastmod>2026-09-11</lastmod><changefreq>yearly</changefreq><priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://snowops.game/data-deletion.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://snowops.game/en/data-deletion.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://snowops.game/data-deletion.html"/></url>
+  <url><loc>https://snowops.game/support.html</loc><lastmod>2026-09-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://snowops.game/support.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://snowops.game/en/support.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://snowops.game/support.html"/></url>
+  <url><loc>https://snowops.game/en/support.html</loc><lastmod>2026-09-11</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://snowops.game/support.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://snowops.game/en/support.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://snowops.game/support.html"/></url>
+  <url><loc>https://snowops.game/android.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>
