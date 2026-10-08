@@ -132,6 +132,10 @@
     if (!r.ok) throw new Error(r.status);
     return r.json();
   }).then(function (releases) {
+    /* Свежий — по дате публикации: GitHub отдаёт релизы по коммиту тега, а теги
+       сайта стоят на старом коммите, и alpha.9 шёл раньше alpha.10. */
+    releases = (releases || []).filter(function (r) { return r.published_at; })
+      .sort(function (a, b) { return Date.parse(b.published_at) - Date.parse(a.published_at); });
     for (var i = 0; i < releases.length; i++) {
       var rel = releases[i];
       if (rel.draft) continue;

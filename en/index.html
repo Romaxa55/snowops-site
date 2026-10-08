@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js" data-root="../">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SnowOps — a tactical stealth shooter for your phone</title>
-  <meta name="description" content="SnowOps is a single-player stealth shooter about an operative on a polar military base. Patrols, trains on a timetable, binoculars and a lot of snow. No internet, no ads, no purchases. 16+">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SnowOps — a stealth shooter about one base and one man</title>
+  <meta name="description" content="SnowOps is a single-player stealth shooter on a snowbound military base. The guards live by the regulations: they change posts, report on the radio and search for the missing. Demo for Android, Windows, Linux and macOS. No internet, no ads, no purchases. 16+">
   <meta name="theme-color" content="#0b1420">
   <link rel="canonical" href="https://snowops.game/en/">
   <link rel="alternate" hreflang="ru" href="https://snowops.game/">
@@ -12,11 +12,11 @@
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SnowOps">
-  <meta property="og:title" content="SnowOps — a tactical stealth shooter for your phone">
-  <meta property="og:description" content="A base above the Arctic Circle. One operative. Nobody must ever know you were there.">
+  <meta property="og:title" content="SnowOps — a stealth shooter about one base and one man">
+  <meta property="og:description" content="A helicopter, the roof of a moving train, a leap over the fence — and you are in. Get through so that nobody ever knows.">
   <meta property="og:url" content="https://snowops.game/en/">
   <meta property="og:image" content="https://snowops.game/assets/img/og.jpg">
-  <meta property="og:image:alt" content="A snowbound military base at night, a radio mast with a red beacon">
+  <meta property="og:image:alt" content="A radio mast over a snowbound military base, in-game shot">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -24,8 +24,13 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
   <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
 
+  <link rel="preload" href="../assets/fonts/Tektur-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/img/real/01-radiovyshka-i-baza-1600.webp" as="image" type="image/webp" media="(min-width: 801px)">
+  <link rel="preload" href="../assets/img/real/01-radiovyshka-i-baza-800.webp" as="image" type="image/webp" media="(max-width: 800px)">
   <link rel="stylesheet" href="../assets/css/fonts.css">
-  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/fonts-geist.css?v=15b">
+  <link rel="stylesheet" href="../assets/css/game.css?v=15b">
+  <script>document.documentElement.className = 'js';</script>
 
   <script type="application/ld+json">
   {
@@ -34,10 +39,10 @@
     "name": "SnowOps",
     "url": "https://snowops.game/en/",
     "image": "https://snowops.game/assets/img/og.jpg",
-    "description": "A single-player tactical stealth shooter about an operative on a polar military base.",
+    "description": "A single-player stealth shooter on a snowbound military base.",
     "genre": ["Stealth", "Shooter", "Tactical"],
-    "gamePlatform": ["Android", "iOS"],
-    "operatingSystem": "Android, iOS",
+    "gamePlatform": ["Android", "Windows", "Linux", "macOS"],
+    "operatingSystem": "Android, Windows, Linux, macOS",
     "applicationCategory": "GameApplication",
     "inLanguage": "en",
     "contentRating": "16+",
@@ -47,231 +52,311 @@
 </head>
 <body>
 
-<nav class="nav" id="nav" aria-label="Main navigation">
-  <div class="wrap">
-    <a class="brand" href="#top" aria-label="SnowOps, home">
-      <span class="brand__mark">
-        <img src="../assets/img/icon-192.png" alt="" width="34" height="34">
-        <span class="brand__beacon" aria-hidden="true"></span>
-      </span>
-      SnowOps
-    </a>
-    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
-    <ul class="nav__links" id="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#features">Features</a></li>
-      <li><a href="#shots">Screenshots</a></li>
-      <li><a href="#trailer">Trailer</a></li>
-      <li><a href="#download">Download</a></li>
-      <li><a href="support.html">Support</a></li>
-      <li class="nav__lang"><a href="../index.html" hreflang="ru" lang="ru">Русский</a></li>
-    </ul>
+<a class="skip" href="#briefing">Skip to content</a>
+
+<!-- ЗАГРУЗКА: только с JS и только при первом заходе за сессию (game.js). -->
+<div class="boot" id="boot" aria-hidden="true">
+  <div class="boot__inner">
+    <p class="boot__logo">SNOWOPS</p>
+    <p class="boot__line"><span>Loading mission</span><span class="boot__pct" id="boot-pct">0%</span></p>
+    <div class="boot__bar"><i id="boot-bar"></i></div>
+    <p class="boot__tip"><b>Tip.</b> <span id="boot-tip">In the dark they spot you later.</span></p>
+    <p class="boot__skip">Press any key</p>
   </div>
-</nav>
+</div>
 
-<main id="top">
+<!-- СМЕНА ЭКРАНА: шторка-титр (game.js). -->
+<div class="scene" id="scene" aria-hidden="true">
+  <div class="scene__sweep"></div>
+  <div class="scene__band">
+    <span class="scene__num" id="scene-num">Loading</span>
+    <span class="scene__name" id="scene-name">Briefing</span>
+    <span class="scene__load"><i></i></span>
+  </div>
+</div>
 
-  <header class="hero" id="hero">
-    <div class="hero__art" aria-hidden="true">
-      <picture>
-        <source srcset="../assets/img/hero.webp" type="image/webp">
-        <img src="../assets/img/hero.jpg" alt="" width="2400" height="1336" fetchpriority="high" decoding="async">
-      </picture>
-      <span class="beacon" style="--x: 55%; --y: 13.17%"></span>
-      <span class="mark" style="--x: 55%; --y: 13.17%"><b>Radio mast</b><small>1,240 m. Beacon is live</small></span>
-      <span class="mark mark--below" style="--x: 69.5%; --y: 55.6%"><b>Bunker entrance</b><small>620 m. Lights are on</small></span>
-    </div>
-    <div class="hero__veil" aria-hidden="true"></div>
+<!-- ВКЛАДКИ: на экранах разделов, как меню в игре. -->
+<header class="top" id="topbar">
+  <a class="top__logo" href="#menu" data-go="menu" aria-label="Main menu">SNOWOPS<i></i></a>
+  <nav class="tabs" aria-label="Sections">
+    <kbd class="tabs__key" aria-hidden="true">Q</kbd>
+    <a class="tab" href="#briefing" data-go="briefing">Briefing</a>
+    <a class="tab" href="#intel" data-go="intel">Guards</a>
+    <a class="tab" href="#recon" data-go="recon">Recon</a>
+    <a class="tab" href="#log" data-go="log">Log</a>
+    <a class="tab tab--go" href="#download" data-go="download">Download</a>
+    <kbd class="tabs__key" aria-hidden="true">E</kbd>
+  </nav>
+  <a class="top__back" href="#menu" data-go="menu"><kbd>Esc</kbd><span>Menu</span></a>
+</header>
 
-    <div class="wrap">
-      <div class="hero__content">
-        <h1 class="hero__title">SnowOps<span>A tactical stealth shooter for your phone</span></h1>
-        <p class="hero__lead">A base above the Arctic Circle. One operative. Nobody must ever know you were there.</p>
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="#download">Download the demo</a>
-          <a class="btn btn--ghost" href="#trailer">Watch the trailer</a>
-        </div>
-        <p class="hero__note">A demo for Android, Windows, Linux and macOS. No internet, no ads, no purchases. 16+</p>
-      </div>
-    </div>
-  </header>
+<main class="screens" id="screens">
 
-  <section class="section" id="about" aria-labelledby="about-title">
-    <div class="wrap about">
-      <div class="about__text">
-        <h2 id="about-title">Get in quietly. Get out quietly.</h2>
-        <p>SnowOps is a single-player campaign about an operative dropped beside a polar military base with one job: get inside, do the work and be gone before dawn.</p>
-        <p>There is no regenerating cover and no arrow pointing at the objective. There are binoculars, a map, patrols on a timetable and a lot of snow you stand out against. Like the shooters of the late nineties, on a phone screen.</p>
-        <ul class="facts">
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>
-            <span>A single-player campaign — no online, no strangers in your match</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/><path d="M3 3l18 18"/></svg>
-            <span>Plays offline: on a plane, on the underground, out of town</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12l8.5-8.5H20v8.5L11.5 20.5z"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><path d="M4 4l16 16"/></svg>
-            <span>No ads, no purchases, no energy timers</span>
-          </li>
+  <!-- ГЛАВНОЕ МЕНЮ -->
+  <section class="screen screen--menu" id="menu" aria-labelledby="title-name" data-mark="Main menu">
+    <picture class="title__bg">
+      <source media="(max-width: 800px)" srcset="../assets/img/real/01-radiovyshka-i-baza-800.webp">
+      <img src="../assets/img/real/01-radiovyshka-i-baza-1600.webp" alt="A radio mast with a zip line over the snowbound base, rails running to the hangars. In-game shot." width="1600" height="900" fetchpriority="high">
+    </picture>
+    <div class="title__shade"></div>
+    <div class="title__body wrap">
+      <p class="tag"><i class="dot"></i>ALPHA.11 · Demo · Works offline</p>
+      <h1 class="title__name" id="title-name">SNOWOPS</h1>
+      <p class="title__sub">A stealth shooter about one base and one man</p>
+      <p class="title__lead">A helicopter, the roof of a moving train, a leap over the fence — and you are in. Thirty-six guards live by the regulations: they change posts, report on the radio, search for the missing. Get through so that nobody ever knows.</p>
+      <nav class="mainmenu" aria-label="Main menu">
+        <ul class="menu" id="mainmenu">
+          <li><a class="menu__item menu__item--go" href="#download" data-go="download">Start mission <small>download the demo</small></a></li>
+          <li><a class="menu__item" href="#briefing" data-go="briefing">Briefing</a></li>
+          <li><a class="menu__item" href="#intel" data-go="intel">How the guards think</a></li>
+          <li><a class="menu__item" href="#recon" data-go="recon">Recon</a></li>
+          <li><a class="menu__item" href="#log" data-go="log">Changelog</a></li>
+          <li><a class="menu__item" href="../" hreflang="ru" lang="ru">Русский</a></li>
         </ul>
-      </div>
+      </nav>
+    </div>
+    <aside class="goals" aria-label="Mission objectives">
+      <p class="goals__title">Mission objectives</p>
+      <ol>
+        <li data-goal="briefing">Study the briefing</li>
+        <li data-goal="intel">Understand the guards</li>
+        <li data-goal="recon">Run recon</li>
+        <li data-goal="log">Read the log</li>
+        <li data-goal="download">Take your gear</li>
+      </ol>
+    </aside>
+    <div class="title__foot">
+      <ul class="legal">
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="data-deletion.html">Data deletion</a></li>
+        <li><a href="support.html">Support</a></li>
+      </ul>
+      <div class="snd" role="group" aria-label="Sound"><button class="snd__btn" type="button" data-snd="music" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="18" cy="16" r="3" fill="currentColor"/></svg><span>Music</span></button><button class="snd__btn" type="button" data-snd="fx" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>Sound</span></button></div>
+      <p class="title__ver"><span id="ver">v0.1.0-alpha.11</span><span class="ver-platforms"> · Android · Windows · Linux · macOS</span> · <b>16+</b></p>
+    </div>
+  </section>
 
-      <div class="device" aria-hidden="true">
-        <div class="device__screen">
-          <!-- To drop in a screenshot: add <img class="frame__img" src="..." alt=""> as the first element inside .frame -->
-          <div class="frame">
-            <img class="frame__img" src="../assets/img/shots/device.jpg" alt="" width="1280" height="590">
-            <div class="frame__mark">
-              <svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg>
-            </div>
+  <!-- БРИФИНГ -->
+  <section class="screen screen--paper" id="briefing" aria-labelledby="briefing-title" data-mark="Briefing">
+    <div class="screen__body wrap">
+      <div class="pager brief" data-pager="brief">
+        <div class="page brief__doc">
+          <p class="label">Mission 01 · Top secret</p>
+          <h2 id="briefing-title">Get in quietly. Get out quietly.</h2>
+          <p class="brief__lead">SnowOps is a single mission on a snowbound military base above the Arctic Circle. You are dropped from a helicopter onto the roof of a train; from there you are on your own: over the fence, past the towers and patrols, to the truck at the main gate.</p>
+          <p class="brief__more">There is no arrow pointing at the objective and no health that regenerates behind cover. There are the guards' eyes to fool, and a silence that a single shot can break.</p>
+        </div>
+        <div class="page brief__side">
+          <ol class="orders">
+            <li><b>Insertion</b><span>From the helicopter onto the roof of a moving train.</span></li>
+            <li><b>Infiltration</b><span>Over the fence, past the towers and patrols.</span></li>
+            <li><b>Objective</b><span>The truck at the main gate.</span></li>
+            <li><b>Advice</b><span>Make sure nobody ever knows you were there.</span></li>
+          </ol>
+          <ul class="facts">
+            <li>The whole mission: from the helicopter jump to driving off in the truck</li>
+            <li>Plays offline: on a plane, on the metro, at the cabin</li>
+            <li>No ads, no purchases, no energy timers</li>
+          </ul>
+        </div>
+        <figure class="page brief__photo">
+          <img src="../assets/img/real/05-snaiper-na-vyshke-800.webp" alt="A sniper in white camo on the radio mast platform. In-game shot." width="800" height="450" loading="lazy">
+          <figcaption>Photo 1. Sniper on the radio mast. He sees far.</figcaption>
+          <span class="stamp">Secret</span>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- КАК ДУМАЕТ ОХРАНА -->
+  <section class="screen" id="intel" aria-labelledby="intel-title" data-mark="How the guards think">
+    <div class="screen__body wrap">
+      <div class="head">
+        <p class="label">Intelligence · 6 reports</p>
+        <h2 id="intel-title">How the guards think</h2>
+      </div>
+      <div class="intel">
+        <ol class="intel__list pager" id="intel-list" data-pager="intel">
+          <li class="page intel__item is-on" data-shot="10-boets-s-avtomatom" data-cam="CAM 01 · Checkpoint" data-mood="?">
+            <button type="button"><span class="intel__n">01</span><span class="intel__t">The guards have doubts</span></button>
+            <img class="intel__thumb" src="../assets/img/real/10-boets-s-avtomatom-800.webp" alt="A soldier with a rifle at the checkpoint. In-game shot." width="800" height="450" loading="lazy">
+            <p>A sentry doesn't shoot at first sight. First comes a "?" — he stops, peers, goes to check. In the dark, lying down or keeping still, you take longer to recognise. Slip away in time and you got lucky.</p>
+          </li>
+          <li class="page intel__item" data-shot="09-kazarma-boitsy" data-cam="CAM 02 · Barracks" data-mood="·">
+            <button type="button"><span class="intel__n">02</span><span class="intel__t">The base lives by the book</span></button>
+            <img class="intel__thumb" src="../assets/img/real/09-kazarma-boitsy-800.webp" alt="Two soldiers in the barracks by a noticeboard. In-game shot." width="800" height="450" loading="lazy">
+            <p>Posts change, the orderly keeps his place, the officer makes his rounds. A sentry first calls out "Halt! Get back!" — and only then opens fire. All by the guard-duty regulations.</p>
+          </li>
+          <li class="page intel__item" data-shot="06-chasovoi-na-vyshke" data-cam="CAM 03 · Tower" data-mood="?">
+            <button type="button"><span class="intel__n">03</span><span class="intel__t">A silent post gets noticed</span></button>
+            <img class="intel__thumb" src="../assets/img/real/06-chasovoi-na-vyshke-800.webp" alt="A sentry in a watchtower booth. In-game shot." width="800" height="450" loading="lazy">
+            <p>"All posts, report." The posts answer in turn: "Nothing to report." Take out a sentry and he gets called again, then: "Post not answering. Go check!" If they find the body — alarm.</p>
+          </li>
+          <li class="page intel__item" data-shot="04-kazarma-vnutri" data-cam="CAM 04 · Barracks" data-mood="·">
+            <button type="button"><span class="intel__n">04</span><span class="intel__t">Light and dark</span></button>
+            <img class="intel__thumb" src="../assets/img/real/04-kazarma-vnutri-800.webp" alt="A barracks room: a bunk, a stool, a locker. In-game shot." width="800" height="450" loading="lazy">
+            <p>A shot into a wall fusebox kills the lights in the whole building, and room lights are ordinary switches by the door. In the dark they spot you later. But they will hear the bang inside.</p>
+          </li>
+          <li class="page intel__item" data-shot="01-radiovyshka-i-baza" data-cam="CAM 05 · Radio mast" data-mood="?">
+            <button type="button"><span class="intel__n">05</span><span class="intel__t">The zip line is a quiet way</span></button>
+            <img class="intel__thumb" src="../assets/img/real/01-radiovyshka-i-baza-800.webp" alt="The radio mast and the zip line over the base. In-game shot." width="800" height="450" loading="lazy">
+            <p>A cable runs from the radio mast across the base. From afar the guards take you for a shadow and only grow wary. But once the siren is wailing, the base is hunting, and being a shadow won't save you.</p>
+          </li>
+          <li class="page intel__item" data-shot="07-patrul-u-sklada" data-cam="CAM 06 · Store 18" data-mood="!">
+            <button type="button"><span class="intel__n">06</span><span class="intel__t">Lost you — now they search</span></button>
+            <img class="intel__thumb" src="../assets/img/real/07-patrul-u-sklada-800.webp" alt="A patrolman by store number 18. In-game shot." width="800" height="450" loading="lazy">
+            <p>They don't forget you after ten seconds. They search where they last saw you, look round the corner and into the rooms. Under the siren the whole base knows over the radio where you were spotted.</p>
+          </li>
+        </ol>
+        <div class="intel__screen monitor" id="intel-screen">
+          <img id="intel-img" src="../assets/img/real/10-boets-s-avtomatom-1600.webp" alt="" width="1600" height="900" loading="lazy">
+          <i class="monitor__noise" aria-hidden="true"></i>
+          <div class="monitor__ui" aria-hidden="true">
+            <span class="monitor__rec"><i></i>REC</span>
+            <span class="monitor__cam" id="intel-cam">CAM 01 · Checkpoint</span>
+            <span class="monitor__time" id="intel-time">06:00:00</span>
+            <span class="monitor__mood" id="intel-mood">?</span>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="section section--steel" id="features" aria-labelledby="features-title">
-    <div class="wrap">
-      <div class="section__head">
-        <h2 id="features-title">What you get</h2>
-        <p>We are making the game we would want to play on the road ourselves: slow, attentive, with no energy timers and no feeling that something is rushing you.</p>
-      </div>
-      <ul class="dossier">
-        <li>
-          <h3>Patrols walk their routes</h3>
-          <p>Guards work the perimeter on a schedule, cameras sweep, searchlights hunt in the dark. Learn the rhythm, find the gap and slip through. Or raise the alarm and deal with what follows.</p>
-        </li>
-        <li>
-          <h3>The base lives without you</h3>
-          <p>Freight trains run to a timetable, a truck pulls out of the garage, the watch changes by the clock. Any of it can be your cover, if you are in the right place at the right time.</p>
-        </li>
-        <li>
-          <h3>Binoculars matter more than a rifle</h3>
-          <p>Open ground and long distances. Look first, plan second, shoot only if there is no way around it. There are not enough rounds for everyone.</p>
-        </li>
-        <li>
-          <h3>Built for a phone</h3>
-          <p>Big buttons, a thumb-friendly layout, short sessions. The game plays offline and asks for no account and no needless permissions.</p>
-        </li>
+      <ul class="kit">
+        <li><b>Cameras and console</b><span>A camera raises the alarm in three seconds. The guard post has a monitor showing their feed.</span></li>
+        <li><b>Snow remembers</b><span>Footprints in the snow, breath steaming in the cold, snowfall over the base.</span></li>
+        <li><b>Weapons</b><span>SVD with a scope, MP5 with a suppressor, grenades. A suppressed shot carries a lot less far.</span></li>
+        <li><b>Made for phones</b><span>Touch controls sized for thumbs. Works without internet.</span></li>
       </ul>
     </div>
   </section>
 
-  <section class="section" id="shots" aria-labelledby="shots-title">
-    <div class="wrap">
-      <div class="section__head section__head--row">
-        <h2 id="shots-title">Screenshots</h2>
-        <div class="shots-nav">
-          <span class="shots-nav__count" id="shots-count" aria-live="polite">1 / 5</span>
-          <button class="shots-nav__btn" type="button" data-dir="-1" aria-label="Previous screenshot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-          <button class="shots-nav__btn" type="button" data-dir="1" aria-label="Next screenshot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+  <!-- РАЗВЕДКА -->
+  <section class="screen screen--steel" id="recon" aria-labelledby="recon-title" data-mark="Recon">
+    <div class="screen__body wrap">
+      <div class="head head--row">
+        <div>
+          <p class="label">Guard console · 8 channels</p>
+          <h2 id="recon-title">Recon</h2>
         </div>
+        <p class="head__note">All captured in-game, untouched.</p>
       </div>
-      <div class="shots" id="shots-track" role="group" tabindex="0" aria-label="Screenshots from the game, scrolled horizontally">
-        <!-- Screenshots 01-05 are generated by tools/qwen_image.py from tools/image_manifest.json and land here as <img class="frame__img"> -->
-        <figure class="shot">
-          <div class="frame"><img class="frame__img" src="../assets/img/shots/01.jpg" alt="An operative in white camouflage lies on a ridge with binoculars; below is the snowbound base: a railway, bunkers, a truck with its headlights on and a radio mast with a red beacon" width="1600" height="892"><div class="frame__mark"><svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg></div></div>
-          <figcaption>Scouting from the ridge. The base below, twelve minutes until the watch changes.</figcaption>
+      <div class="recon">
+        <figure class="recon__main monitor" id="recon-main">
+          <img id="recon-img" src="../assets/img/real/03-baza-sverkhu-1600.webp" alt="The base from above: hangars, towers, tanks. In-game shot." width="1600" height="900" loading="lazy">
+          <i class="monitor__noise" aria-hidden="true"></i>
+          <div class="monitor__ui" aria-hidden="true"><span class="monitor__rec"><i></i>REC</span><span class="monitor__cam" id="recon-cam">CAM 01</span><span class="monitor__time" id="recon-time">06:00:00</span></div>
+          <figcaption id="recon-cap">The base from above. Hangars, towers, tanks.</figcaption>
         </figure>
-        <figure class="shot">
-          <div class="frame"><img class="frame__img" src="../assets/img/shots/02.jpg" alt="An operative in white camouflage hangs from the ladder of a rusted freight wagon as the train runs towards the base, snow flying from under the wheels" width="1600" height="892" loading="lazy"><div class="frame__mark"><svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg></div></div>
-          <figcaption>A freight train heading for the base. The best way in without a pass.</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="frame"><img class="frame__img" src="../assets/img/shots/03.jpg" alt="The perimeter at night: a searchlight on the tower sweeps over the fence, the operative presses against a concrete wall beneath the beam, a guard with a rifle on the walkway" width="1600" height="892" loading="lazy"><div class="frame__mark"><svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg></div></div>
-          <figcaption>The perimeter. The searchlight comes back every eight seconds.</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="frame"><img class="frame__img" src="../assets/img/shots/04.jpg" alt="The operative climbs the iced ladder of the radio mast, a red beacon at the top, the aurora and the base lights behind him" width="1600" height="892" loading="lazy"><div class="frame__mark"><svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg></div></div>
-          <figcaption>The radio mast. While the red light burns, they still have contact.</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="frame"><img class="frame__img" src="../assets/img/shots/05.jpg" alt="The base garage: a military truck with its headlights on pulls out into the blizzard, the operative hides behind crates under a lamp" width="1600" height="892" loading="lazy"><div class="frame__mark"><svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg></div></div>
-          <figcaption>The garage. The truck leaves in a minute, with you or without you.</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--steel" id="trailer" aria-labelledby="trailer-title">
-    <div class="wrap">
-      <div class="section__head">
-        <h2 id="trailer-title">Trailer</h2>
-      </div>
-      <div class="trailer">
-        <video controls preload="none" playsinline poster="../assets/img/hero-poster.jpg">
-          <source src="../trailer/snowops-trailer.mp4" type="video/mp4">
-          Your browser cannot play this video. <a href="../trailer/snowops-trailer.mp4">Download the trailer</a>.
-        </video>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="download" aria-labelledby="download-title">
-    <div class="wrap">
-      <div class="section__head">
-        <h2 id="download-title">Download the demo</h2>
-        <p>The demo build is already available for Android, Windows, Linux and macOS. This is an early testing version: it can crash and stutter, which is exactly what testers are for. Stores will come later.</p>
-      </div>
-      <div class="alpha" id="alpha" data-repo="Romaxa55/snowops-site">
-        <h3>Demo build</h3>
-        <p class="alpha__meta">Files for every platform live in the GitHub releases, with checksums and release notes beside them.</p>
-        <ul class="alpha__list stores">
-          <li>
-            <a class="store" href="https://github.com/Romaxa55/snowops-site/releases/latest">
-              <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 8v18m0 0-7-7m7 7 7-7"/><path d="M8 28v6a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2v-6"/></svg>
-              <span><b>Latest build on GitHub</b><small>Android, Windows, Linux, macOS</small></span>
-            </a>
-          </li>
+        <ul class="wall" id="wall">
+          <li><a class="monitor is-on" href="../assets/img/real/03-baza-sverkhu-1600.webp" data-cap="The base from above. Hangars, towers, tanks."><img src="../assets/img/real/03-baza-sverkhu-800.webp" alt="The base from above: hangars, towers, tanks. In-game shot." width="800" height="450" loading="lazy"><span class="monitor__cam">CAM 01</span></a></li>
+          <li><a class="monitor" href="../assets/img/real/11-snaiper-nad-zheleznoi-dorogoi-1600.webp" data-cap="Sniper above the railway. Him first."><img src="../assets/img/real/11-snaiper-nad-zheleznoi-dorogoi-800.webp" alt="A sniper on a platform above the railway. In-game shot." width="800" height="450" loading="lazy"><span class="monitor__cam">CAM 02</span></a></li>
+          <li><a class="monitor" href="../assets/img/real/08-oruzheinaya-1600.webp" data-cap="The armoury. Two by the cage."><img src="../assets/img/real/08-oruzheinaya-800.webp" alt="Two soldiers in the armoury by the cage. In-game shot." width="800" height="450" loading="lazy"><span class="monitor__cam">CAM 03</span></a></li>
+          <li><a class="monitor" href="../assets/img/real/10-boets-s-avtomatom-1600.webp" data-cap="Patrol at the checkpoint."><img src="../assets/img/real/10-boets-s-avtomatom-800.webp" alt="A patrolman with a rifle at the checkpoint. In-game shot." width="800" height="450" loading="lazy"><span class="monitor__cam">CAM 04</span></a></li>
+          <li><a class="monitor" href="../assets/img/real/12-shtab-cherez-okno-1600.webp" data-cap="HQ. An officer at his desk, portraits on the wall."><img src="../assets/img/real/12-shtab-cherez-okno-800.webp" alt="HQ through a window: an officer at his desk, portraits on the wall. In-game shot." width="800" height="450" loading="lazy"><span class="monitor__cam">CAM 05</span></a></li>
+          <li><a class="monitor" href="../assets/img/real/04-kazarma-vnutri-1600.webp" data-cap="Barracks. Bunks made up by the book."><img src="../assets/img/real/04-kazarma-vnutri-800.webp" alt="Inside the barracks. In-game shot." width="800" height="450" loading="lazy"><span class="monitor__cam">CAM 06</span></a></li>
+          <li><a class="monitor" href="../assets/img/real/02-baza-s-kholma-1600.webp" data-cap="The base from the ridge. You can see where the patrols walk."><img src="../assets/img/real/02-baza-s-kholma-800.webp" alt="The base from the ridge. In-game shot." width="800" height="450" loading="lazy"><span class="monitor__cam">CAM 07</span></a></li>
+          <li><a class="monitor" href="../assets/img/real/07-patrul-u-sklada-1600.webp" data-cap="Store 18. The patrol walks its own route — learn it."><img src="../assets/img/real/07-patrul-u-sklada-800.webp" alt="A patrolman by store 18. In-game shot." width="800" height="450" loading="lazy"><span class="monitor__cam">CAM 08</span></a></li>
         </ul>
-        <p class="alpha__how">Windows: run the installer (setup.exe); the archive is for a portable copy with no installation. Android: allow installation from unknown sources and open the APK. macOS: right-click the app and choose Open. Linux: the archive holds two binaries, x86_64 and arm64, and a shared data file.</p>
       </div>
-      <h3 class="stores-later">In stores: later</h3>
-      <ul class="stores stores--muted">
-        <li>
-          <span class="store" aria-disabled="true">
-            <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 8v18m0 0-7-7m7 7 7-7"/><path d="M8 28v6a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2v-6"/></svg>
-            <span><b>Google Play</b><small>After testing</small></span>
-          </span>
+    </div>
+  </section>
+
+  <!-- ЖУРНАЛ ИЗМЕНЕНИЙ -->
+  <section class="screen screen--dim" id="log" aria-labelledby="log-title" data-mark="Changelog">
+    <div class="screen__body wrap log">
+      <div class="log__main">
+        <div class="head">
+          <p class="label">Update · ALPHA.11 · 8 October 2026</p>
+          <h2 id="log-title">What's new in this build</h2>
+        </div>
+        <ul class="log__list">
+          <li>The zip line is a quiet way: from afar the guards only grow wary.</li>
+          <li>Intro: a jump from the helicopter ramp onto the train roof and a dive over the fence.</li>
+          <li>In the cabin: the jumpmaster's commands, the klaxon and "Go!".</li>
+          <li>SVD sniper rifle with a scope.</li>
+          <li>Guards find their comrades' bodies, the wounded fall back, posts report on the radio.</li>
+          <li>Alarm log for testers: who spotted you, from where and why.</li>
+        </ul>
+        <p class="log__more"><a href="https://github.com/Romaxa55/snowops-site/releases">All changes — on the releases page →</a></p>
+      </div>
+      <div class="classified">
+        <span class="stamp stamp--red">Classified</span>
+        <p><b>Footage.</b> The trailer is still being cut — we will show it when there is something to show.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- СНАРЯЖЕНИЕ -->
+  <section class="screen screen--night" id="download" aria-labelledby="download-title" data-mark="Gear">
+    <div class="screen__body wrap">
+      <div class="head head--row">
+        <div>
+          <p class="label">Choose your gear</p>
+          <h2 id="download-title">Download the demo</h2>
+        </div>
+        <p class="head__note" id="rel" data-repo="Romaxa55/snowops-site">Early build: it can crash and stutter — that is what testers are for. Builds are in the <a href="https://github.com/Romaxa55/snowops-site/releases/latest">latest release on GitHub</a>.</p>
+      </div>
+      <p class="os-note" id="os-note" hidden></p>
+      <ul class="loadout pager" id="loadout" data-pager="loadout">
+        <li class="page gear" data-os="android">
+          <p class="gear__slot">Slot 1</p>
+          <h3>Android</h3>
+          <dl><dt>Format</dt><dd>APK, arm64</dd><dt>System</dt><dd>Android 8.0 or newer</dd><dt>Size</dt><dd data-size="android">—</dd></dl>
+          <p class="gear__how">Allow installs from unknown sources and open the APK.</p>
+          <div class="gear__go"><a class="btn btn--go" data-file="android" href="https://github.com/Romaxa55/snowops-site/releases/latest">Take</a></div>
         </li>
-        <li>
-          <span class="store" aria-disabled="true">
-            <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 8v18m0 0-7-7m7 7 7-7"/><path d="M8 28v6a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2v-6"/></svg>
-            <span><b>App Store</b><small>After testing</small></span>
-          </span>
+        <li class="page gear" data-os="windows">
+          <p class="gear__slot">Slot 2</p>
+          <h3>Windows</h3>
+          <dl><dt>Format</dt><dd>installer or zip, x86_64</dd><dt>System</dt><dd>Windows 10 or newer</dd><dt>Size</dt><dd data-size="windows-setup">—</dd></dl>
+          <p class="gear__how">Installer — a normal install; archive — a portable version, no installing.</p>
+          <div class="gear__go"><a class="btn btn--go" data-file="windows-setup" href="https://github.com/Romaxa55/snowops-site/releases/latest">Installer</a><a class="btn" data-file="windows-zip" href="https://github.com/Romaxa55/snowops-site/releases/latest">Archive</a></div>
         </li>
-        <li>
-          <span class="store" aria-disabled="true">
-            <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 8v18m0 0-7-7m7 7 7-7"/><path d="M8 28v6a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2v-6"/></svg>
-            <span><b>RuStore</b><small>After testing</small></span>
-          </span>
+        <li class="page gear" data-os="linux">
+          <p class="gear__slot">Slot 3</p>
+          <h3>Linux</h3>
+          <dl><dt>Format</dt><dd>tar.gz, x86_64 and arm64</dd><dt>System</dt><dd>a modern distro</dd><dt>Size</dt><dd data-size="linux">—</dd></dl>
+          <p class="gear__how">Two binaries in the archive, x86_64 and arm64, plus a shared data file.</p>
+          <div class="gear__go"><a class="btn btn--go" data-file="linux" href="https://github.com/Romaxa55/snowops-site/releases/latest">Take</a></div>
+        </li>
+        <li class="page gear" data-os="macos">
+          <p class="gear__slot">Slot 4</p>
+          <h3>macOS</h3>
+          <dl><dt>Format</dt><dd>zip, universal</dd><dt>System</dt><dd>macOS 11 or newer</dd><dt>Size</dt><dd data-size="macos">—</dd></dl>
+          <p class="gear__how">Right-click the app → Open: the build is not notarized by Apple.</p>
+          <div class="gear__go"><a class="btn btn--go" data-file="macos" href="https://github.com/Romaxa55/snowops-site/releases/latest">Take</a></div>
         </li>
       </ul>
-      <p class="download__note"><strong>Share the game:</strong> <a href="../android.html?lang=en">snowops.game/android.html</a> — a QR-code page that always points at the latest Android build.</p>
-      <p class="download__note">Send bugs, crashes and suggestions to <a href="mailto:support@snowops.game">support@snowops.game</a> or to <a href="https://github.com/Romaxa55/snowops-site/issues">Issues on GitHub</a>. Include your device, your OS version and the game version from the file name.</p>
+      <div class="dl-foot">
+        <p><span class="label">In stores: later</span> Google Play · App Store · RuStore — after testing.</p>
+        <p>Share: <a href="../android.html">snowops.game/android.html</a> — a QR code for the latest build. Bugs and crashes — <a href="mailto:support@snowops.game">support@snowops.game</a> or <a href="https://github.com/Romaxa55/snowops-site/issues">Issues</a>.</p>
+      </div>
     </div>
   </section>
 
 </main>
 
-<footer class="footer">
-  <div class="wrap">
-    <div class="footer__row">
-      <ul class="footer__links">
-        <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="terms.html">Terms of Service</a></li>
-        <li><a href="data-deletion.html">Data deletion</a></li>
-        <li><a href="support.html">Support</a></li>
-      </ul>
-      <span class="age" title="Age rating 16+">16+</span>
-    </div>
-    <p class="footer__legal">© 2026 SnowOps. All rights to the game, its name and the materials on this site belong to the developer. Google Play, App Store and RuStore are trademarks of their respective owners.</p>
-  </div>
+<!-- ПОДСКАЗКИ И ЛИСТАЛКА: внизу экрана разделов. -->
+<footer class="hint" id="hint">
+  <div class="snd" role="group" aria-label="Sound"><button class="snd__btn" type="button" data-snd="music" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="18" cy="16" r="3" fill="currentColor"/></svg><span>Music</span></button><button class="snd__btn" type="button" data-snd="fx" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>Sound</span></button></div>
+  <button class="hint__btn" type="button" id="hint-prev" aria-label="Previous">◀</button>
+  <p class="hint__keys"><kbd>Q</kbd><kbd>E</kbd> section · <kbd>←</kbd><kbd>→</kbd> select · <kbd>Esc</kbd> menu</p>
+  <p class="hint__count" id="hint-count" aria-live="polite"></p>
+  <button class="hint__btn" type="button" id="hint-next" aria-label="Next">▶</button>
+  <p class="hint__legal">© 2026 SnowOps · <span class="age">16+</span></p>
 </footer>
 
-<script src="../assets/js/site.js" defer></script>
-<script src="../assets/js/releases.js" defer></script>
+<!-- Просмотр кадра на весь экран -->
+<div class="view" id="view" role="dialog" aria-modal="true" aria-label="In-game shot" hidden>
+  <figure class="view__frame monitor">
+    <img id="view-img" src="" alt="">
+    <div class="monitor__ui"><span class="monitor__rec"><i></i>REC</span><span class="monitor__cam" id="view-cam"></span></div>
+    <figcaption id="view-cap"></figcaption>
+  </figure>
+  <button class="view__btn view__prev" type="button" data-step="-1" aria-label="Previous shot">←</button>
+  <button class="view__btn view__next" type="button" data-step="1" aria-label="Next shot">→</button>
+  <button class="view__close" type="button" aria-label="Close">Esc</button>
+</div>
+
+<script src="../assets/js/game.js?v=15b" defer></script>
 </body>
 </html>
