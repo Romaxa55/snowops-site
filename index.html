@@ -28,8 +28,8 @@
   <link rel="preload" href="assets/img/real/01-radiovyshka-i-baza-1600.webp" as="image" type="image/webp" media="(min-width: 801px)">
   <link rel="preload" href="assets/img/real/01-radiovyshka-i-baza-800.webp" as="image" type="image/webp" media="(max-width: 800px)">
   <link rel="stylesheet" href="assets/css/fonts.css">
-  <link rel="stylesheet" href="assets/css/fonts-geist.css?v=14a">
-  <link rel="stylesheet" href="assets/css/game.css?v=14a">
+  <link rel="stylesheet" href="assets/css/fonts-geist.css?v=15b">
+  <link rel="stylesheet" href="assets/css/game.css?v=15b">
   <script>document.documentElement.className = 'js';</script>
 
   <script type="application/ld+json">
@@ -132,6 +132,7 @@
         <li><a href="data-deletion.html">Удаление данных</a></li>
         <li><a href="support.html">Поддержка</a></li>
       </ul>
+      <div class="snd" role="group" aria-label="Звук"><button class="snd__btn" type="button" data-snd="music" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="18" cy="16" r="3" fill="currentColor"/></svg><span>Музыка</span></button><button class="snd__btn" type="button" data-snd="fx" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>Звук</span></button></div>
       <p class="title__ver"><span id="ver">v0.1.0-alpha.11</span><span class="ver-platforms"> · Android · Windows · Linux · macOS</span> · <b>16+</b></p>
     </div>
   </section>
@@ -294,29 +295,30 @@
         </div>
         <p class="head__note" id="rel" data-repo="Romaxa55/snowops-site">Ранняя версия: может падать и тормозить — за этим и нужны тестеры. Сборки — в <a href="https://github.com/Romaxa55/snowops-site/releases/latest">последнем релизе на GitHub</a>.</p>
       </div>
+      <p class="os-note" id="os-note" hidden></p>
       <ul class="loadout pager" id="loadout" data-pager="loadout">
-        <li class="page gear">
+        <li class="page gear" data-os="android">
           <p class="gear__slot">Слот 1</p>
           <h3>Android</h3>
           <dl><dt>Формат</dt><dd>APK, arm64</dd><dt>Система</dt><dd>Android 8.0 и новее</dd><dt>Размер</dt><dd data-size="android">—</dd></dl>
           <p class="gear__how">Разрешите установку из неизвестных источников и откройте APK.</p>
           <div class="gear__go"><a class="btn btn--go" data-file="android" href="https://github.com/Romaxa55/snowops-site/releases/latest">Взять</a></div>
         </li>
-        <li class="page gear">
+        <li class="page gear" data-os="windows">
           <p class="gear__slot">Слот 2</p>
           <h3>Windows</h3>
           <dl><dt>Формат</dt><dd>установщик или zip, x86_64</dd><dt>Система</dt><dd>Windows 10 и новее</dd><dt>Размер</dt><dd data-size="windows-setup">—</dd></dl>
           <p class="gear__how">Установщик — обычная установка; архив — переносная версия без установки.</p>
           <div class="gear__go"><a class="btn btn--go" data-file="windows-setup" href="https://github.com/Romaxa55/snowops-site/releases/latest">Установщик</a><a class="btn" data-file="windows-zip" href="https://github.com/Romaxa55/snowops-site/releases/latest">Архив</a></div>
         </li>
-        <li class="page gear">
+        <li class="page gear" data-os="linux">
           <p class="gear__slot">Слот 3</p>
           <h3>Linux</h3>
           <dl><dt>Формат</dt><dd>tar.gz, x86_64 и arm64</dd><dt>Система</dt><dd>современный дистрибутив</dd><dt>Размер</dt><dd data-size="linux">—</dd></dl>
           <p class="gear__how">В архиве два бинарника, x86_64 и arm64, и общий файл данных.</p>
           <div class="gear__go"><a class="btn btn--go" data-file="linux" href="https://github.com/Romaxa55/snowops-site/releases/latest">Взять</a></div>
         </li>
-        <li class="page gear">
+        <li class="page gear" data-os="macos">
           <p class="gear__slot">Слот 4</p>
           <h3>macOS</h3>
           <dl><dt>Формат</dt><dd>zip, universal</dd><dt>Система</dt><dd>macOS 11 и новее</dd><dt>Размер</dt><dd data-size="macos">—</dd></dl>
@@ -335,6 +337,7 @@
 
 <!-- ПОДСКАЗКИ И ЛИСТАЛКА: внизу экрана разделов. -->
 <footer class="hint" id="hint">
+  <div class="snd" role="group" aria-label="Звук"><button class="snd__btn" type="button" data-snd="music" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="18" cy="16" r="3" fill="currentColor"/></svg><span>Музыка</span></button><button class="snd__btn" type="button" data-snd="fx" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>Звук</span></button></div>
   <button class="hint__btn" type="button" id="hint-prev" aria-label="Предыдущий">◀</button>
   <p class="hint__keys"><kbd>Q</kbd><kbd>E</kbd> раздел · <kbd>←</kbd><kbd>→</kbd> выбор · <kbd>Esc</kbd> меню</p>
   <p class="hint__count" id="hint-count" aria-live="polite"></p>
@@ -354,6 +357,6 @@
   <button class="view__close" type="button" aria-label="Закрыть">Esc</button>
 </div>
 
-<script src="assets/js/game.js?v=14a" defer></script>
+<script src="assets/js/game.js?v=15b" defer></script>
 </body>
 </html>

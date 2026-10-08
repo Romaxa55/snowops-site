@@ -18,13 +18,150 @@
     loading: 'Loading', back: 'Returning', page: 'Page', report: 'Report', cam: 'CAM', slot: 'Slot',
     test: 'Test build ', version: 'Version ', from: ' from ', early: '. Early build: it may crash and stutter. ',
     rel: 'Release and checksums', mb: ' MB', locale: 'en-GB',
+    mine: 'Your system', forOs: 'download for ', slotWord: 'Slot ',
+    ios: 'There is no build for iPhone and iPad yet — the demo is for Android, Windows, Linux and macOS.',
     glyphs: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&/<>'
   } : {
     loading: 'Загрузка', back: 'Возврат', page: 'Стр.', report: 'Донесение', cam: 'КАМ', slot: 'Слот',
     test: 'Тестовая сборка ', version: 'Версия ', from: ' от ', early: '. Ранняя версия: может падать и тормозить. ',
     rel: 'Релиз и контрольные суммы', mb: ' МБ', locale: 'ru-RU',
+    mine: 'Ваша система', forOs: 'скачать для ', slotWord: 'Слот ',
+    ios: 'Для iPhone и iPad сборки пока нет — демо есть для Android, Windows, Linux и macOS.',
     glyphs: 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ0123456789#%&/<>'
   };
+
+
+  /* ---------- ЗВУК: эффекты из игры (интро, ElevenLabs), музыка — Suno автора,
+     щелчки и помехи синтезируются тут же. Ничего не грузится до загрузки страницы:
+     эффекты — после неё в фоне, музыка — после первого нажатия и только если
+     включена. Браузер не даёт звучать до первого нажатия — тогда и включаемся. ---------- */
+  var SND = (function () {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    var keep = (function () { try { return window.localStorage; } catch (e) { return null; } })();
+    var on = { music: !keep || keep.getItem('snowops-music') !== '0', fx: !keep || keep.getItem('snowops-fx') !== '0' };
+    var FILES = ['whoosh', 'whoosh-back', 'horn', 'doors', 'land'];
+    var raw = {}, buf = {}, ctx = null, fxGain = null, musicGain = null, musicBuf = null, musicLoading = false;
+    var musicNodes = [], musicTimer = 0, lastTick = 0;
+    var url = function (n) { return ROOT + 'assets/audio/' + n + '.mp3'; };
+    function decode(ab) {
+      return new Promise(function (res, rej) { ctx.decodeAudioData(ab.slice(0), res, rej); });
+    }
+    function prefetch() {
+      if (!window.fetch) return;
+      FILES.forEach(function (n) {
+        fetch(url(n)).then(function (r) { return r.ok ? r.arrayBuffer() : null; })
+          .then(function (ab) { if (ab) { raw[n] = ab; if (ctx) decode(ab).then(function (b) { buf[n] = b; }).catch(function () {}); } })
+          .catch(function () {});
+      });
+    }
+    function unlock() {
+      if (!AC) return;
+      if (!ctx) {
+        ctx = new AC();
+        fxGain = ctx.createGain(); fxGain.gain.value = 0.55; fxGain.connect(ctx.destination);
+        musicGain = ctx.createGain(); musicGain.gain.value = 0; musicGain.connect(ctx.destination);
+        Object.keys(raw).forEach(function (n) { decode(raw[n]).then(function (b) { buf[n] = b; }).catch(function () {}); });
+      }
+      if (ctx.state === 'suspended') ctx.resume();
+      if (on.music) musicStart();
+    }
+    function play(name, vol, rate) {
+      if (!on.fx || !ctx || !buf[name]) return;
+      var s = ctx.createBufferSource(), g = ctx.createGain();
+      s.buffer = buf[name];
+      s.playbackRate.value = rate || 1;
+      g.gain.value = vol == null ? 1 : vol;
+      s.connect(g); g.connect(fxGain); s.start();
+    }
+    function blip(freq, dur, type, vol) {
+      if (!on.fx || !ctx) return;
+      var t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = type || 'square'; o.frequency.value = freq;
+      g.gain.setValueAtTime(vol || 0.05, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(fxGain); o.start(t); o.stop(t + dur + 0.02);
+    }
+    function hiss(dur, vol, freq) {
+      if (!on.fx || !ctx) return;
+      var n = Math.floor(ctx.sampleRate * dur), b = ctx.createBuffer(1, n, ctx.sampleRate), d = b.getChannelData(0);
+      for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+      var s = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+      s.buffer = b; f.type = 'bandpass'; f.frequency.value = freq || 3200; f.Q.value = 0.7;
+      g.gain.value = vol || 0.22;
+      s.connect(f); f.connect(g); g.connect(fxGain); s.start();
+    }
+    function tick() {
+      var now = performance.now();
+      if (now - lastTick < 55) return;
+      lastTick = now;
+      blip(1650, 0.035, 'square', 0.035);
+    }
+    function chatter(ms) {
+      if (!on.fx || !ctx) return;
+      for (var t = 0; t < ms; t += 70 + Math.random() * 60) {
+        setTimeout(function () { blip(900 + Math.random() * 1400, 0.025, 'square', 0.018); }, t);
+      }
+    }
+    function musicLoop(at) {
+      var s = ctx.createBufferSource();
+      s.buffer = musicBuf; s.connect(musicGain); s.start(at);
+      musicNodes.push(s);
+      s.onended = function () { musicNodes = musicNodes.filter(function (x) { return x !== s; }); };
+      /* Следующий круг — за 3 с до конца: в файле там уже затухание, а в начале — вход. */
+      var next = at + musicBuf.duration - 3;
+      musicTimer = setTimeout(function () { if (on.music && ctx) musicLoop(next); }, Math.max(0, (next - ctx.currentTime - 1) * 1000));
+    }
+    function musicStart() {
+      if (!ctx || !on.music) return;
+      musicGain.gain.cancelScheduledValues(ctx.currentTime);
+      musicGain.gain.setTargetAtTime(0.3, ctx.currentTime, 0.8);
+      if (musicNodes.length) return;
+      if (musicBuf) { musicLoop(ctx.currentTime + 0.05); return; }
+      if (musicLoading || !window.fetch) return;
+      musicLoading = true;
+      fetch(url('menu-theme')).then(function (r) { return r.arrayBuffer(); }).then(decode)
+        .then(function (b) { musicBuf = b; musicLoading = false; if (on.music && !musicNodes.length) musicLoop(ctx.currentTime + 0.05); })
+        .catch(function () { musicLoading = false; });
+    }
+    function musicStop() {
+      if (!ctx) return;
+      musicGain.gain.cancelScheduledValues(ctx.currentTime);
+      musicGain.gain.setTargetAtTime(0, ctx.currentTime, 0.25);
+      clearTimeout(musicTimer);
+      var nodes = musicNodes; musicNodes = [];
+      setTimeout(function () { nodes.forEach(function (n) { try { n.stop(); } catch (e) {} }); }, 1300);
+    }
+    function paint() {
+      all('[data-snd]').forEach(function (b) { b.setAttribute('aria-pressed', on[b.getAttribute('data-snd')] ? 'true' : 'false'); });
+    }
+    function toggle(kind) {
+      on[kind] = !on[kind];
+      if (keep) keep.setItem(kind === 'music' ? 'snowops-music' : 'snowops-fx', on[kind] ? '1' : '0');
+      unlock();
+      if (kind === 'music') { if (on.music) musicStart(); else musicStop(); }
+      else if (on.fx) tick();
+      paint();
+    }
+    window.addEventListener('pointerdown', unlock, true);
+    window.addEventListener('keydown', unlock, true);
+    window.addEventListener('load', function () { setTimeout(prefetch, 800); });
+    document.addEventListener('visibilitychange', function () {
+      if (!ctx) return;
+      if (document.hidden) ctx.suspend(); else ctx.resume();
+    });
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('[data-snd]');
+      if (b) toggle(b.getAttribute('data-snd'));
+    });
+    /* Наведение мышью — щелчок, как в меню игры. */
+    document.addEventListener('pointerover', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      var t = e.target.closest && e.target.closest('.menu__item, .tab, .gear, .wall .monitor, .intel__item button, .snd__btn, .top__back, .hint__btn');
+      if (t && !t.contains(e.relatedTarget)) tick();
+    });
+    paint();
+    return { play: play, tick: tick, hiss: hiss, chatter: chatter };
+  })();
 
   /* ---------- ЗАГРУЗКА МИССИИ ---------- */
   var TIPS = EN ? [
@@ -53,6 +190,7 @@
       if (done) return;
       done = true;
       root.classList.add('booted');
+      SND.play('doors', 0.7);
       if (store) store.setItem('snowops-boot', '1');
       window.removeEventListener('keydown', finish);
       window.removeEventListener('pointerdown', finish);
@@ -68,6 +206,35 @@
     window.addEventListener('pointerdown', finish);
     requestAnimationFrame(step);
   }
+
+
+  /* ---------- ВАША СИСТЕМА: нужный слот первым, с плашкой ---------- */
+  (function () {
+    var ua = navigator.userAgent || '', plat = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+    var os = /Android/i.test(ua) ? 'android'
+      : /iPhone|iPad|iPod/i.test(ua) || (/Mac/i.test(plat) && navigator.maxTouchPoints > 1) ? 'ios'
+      : /Win/i.test(plat) || /Windows/i.test(ua) ? 'windows'
+      : /Mac/i.test(plat) || /Mac OS X/i.test(ua) ? 'macos'
+      : /Linux|X11|CrOS/i.test(plat + ua) ? 'linux' : '';
+    if (!os) return;
+    root.setAttribute('data-os', os);
+    if (os === 'ios') {
+      var note = $('os-note');
+      if (note) { note.textContent = T.ios; note.hidden = false; }
+      return;
+    }
+    var list = $('loadout'), mine = list && list.querySelector('[data-os="' + os + '"]');
+    if (!mine) return;
+    mine.classList.add('is-mine');
+    var badge = document.createElement('p');
+    badge.className = 'gear__mine';
+    badge.textContent = T.mine;
+    mine.insertBefore(badge, mine.firstChild);
+    list.insertBefore(mine, list.firstChild);
+    all('.gear__slot', list).forEach(function (p, i) { p.textContent = T.slotWord + (i + 1); });
+    var go = document.querySelector('#mainmenu .menu__item--go small');
+    if (go) go.textContent = T.forOs + mine.querySelector('h3').textContent;
+  })();
 
   /* ---------- ЭКРАНЫ ---------- */
   var screens = {};
@@ -85,6 +252,7 @@
     var text = h.getAttribute('data-text') || h.textContent;
     h.setAttribute('data-text', text);
     h.setAttribute('aria-label', text);
+    SND.chatter(560);
     var t0 = performance.now();
     (function f(now) {
       var k = Math.min(1, (now - t0) / 600), out = '';
@@ -112,6 +280,7 @@
     root.classList.toggle('on-menu', id === 'menu');
     tabs.forEach(function (t) { t.classList.toggle('is-on', t.getAttribute('data-go') === id); });
     if (!reduce) { void next.offsetWidth; next.classList.add('is-enter'); setTimeout(function () { next.classList.remove('is-enter'); }, 1200); }
+    if (id === 'recon' || id === 'intel') setTimeout(function () { SND.hiss(0.4, 0.14, 2400); }, 160);
     if (id !== 'menu') {
       visited[id] = 1;
       if (store) store.setItem('snowops-goals', JSON.stringify(visited));
@@ -139,6 +308,8 @@
     scene.classList.remove('is-on');
     void scene.offsetWidth;
     scene.classList.add('is-on');
+    SND.play(id === 'menu' ? 'whoosh-back' : 'whoosh', 0.8);
+    if (id === 'download') setTimeout(function () { SND.play('horn', 0.5); }, 260);
     setTimeout(function () { show(id); }, 190);
     setTimeout(function () {
       scene.classList.remove('is-on');
@@ -188,6 +359,7 @@
   var items = all('#intel-list .intel__item');
   var iScreen = $('intel-screen'), iImg = $('intel-img'), iCam = $('intel-cam'), iMood = $('intel-mood');
   function noise(box) {
+    SND.hiss(0.18, 0.2);
     box.classList.remove('is-switch');
     void box.offsetWidth;
     box.classList.add('is-switch');
@@ -256,6 +428,7 @@
     var s = stepper();
     if (!s) return false;
     s.set(s.at() + d, d);
+    SND.tick();
     hintUpdate();
     return true;
   }
@@ -285,6 +458,7 @@
   rMain.addEventListener('click', function () {
     viewFrom = document.activeElement;
     viewShow(rAt);
+    SND.hiss(0.3, 0.22);
     view.hidden = false;
     view.querySelector('.view__close').focus({ preventScroll: true });
   });
@@ -311,6 +485,7 @@
     list.forEach(function (it) { it.classList.remove('is-sel'); });
     list[i].classList.add('is-sel');
     list[i].focus({ preventScroll: true });
+    SND.tick();
   }
   document.addEventListener('keydown', function (e) {
     if (e.altKey || e.metaKey || e.ctrlKey) return;
