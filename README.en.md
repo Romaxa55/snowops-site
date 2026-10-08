@@ -1,7 +1,7 @@
 <p align="right"><a href="README.md">Русский</a> · <b>English</b></p>
 
 <p align="center">
-  <a href="https://romaxa55.github.io/snowops-site/"><img src="assets/img/og.jpg" alt="SnowOps: an operative in white winter camouflage watches a snowbound military base with a radio tower through binoculars" width="100%"></a>
+  <a href="https://romaxa55.github.io/snowops-site/"><img src="assets/img/og.jpg" alt="SnowOps: a radio mast over a snowbound military base, in-game shot" width="100%"></a>
 </p>
 
 <h1 align="center">SnowOps</h1>
@@ -19,11 +19,9 @@
 
 ## What it is
 
-SnowOps is a single-player campaign about an operative dropped near a polar military base with one job: get inside, do the work, and be gone before dawn.
+SnowOps is a single mission on a snowbound military base above the Arctic Circle. You are dropped from a helicopter onto the roof of a moving train; from there you are on your own: over the fence, past the towers and patrols, to the truck at the main gate.
 
-There is no regenerating health behind cover and no arrow pointing at the objective. There are binoculars, a map, patrols on a schedule, and a lot of snow you are very visible on. Like the shooters of the late nineties, on a phone screen. The game is fully offline: no internet, no accounts, no ads, no purchases.
-
-The game is currently in Russian. An English version is on the roadmap.
+There is no arrow pointing at the objective and no health that regenerates behind cover. There are the guards' eyes to fool, and a silence that a single shot can break. Thirty-six guards live by the regulations: they change posts, report on the radio and search for the missing. The game works fully offline: no internet, no accounts, no ads, no purchases.
 
 ## Download a test build
 
@@ -32,7 +30,7 @@ The game is in **alpha**: it may crash, stutter and surprise you. That is exactl
 | Platform | File | How to run |
 |---|---|---|
 | Android 8.0+, arm64 | `SnowOps-vX-android-arm64.apk` | Allow installs from unknown sources, open the APK |
-| Windows 10/11, x86_64 | `SnowOps-vX-windows-x86_64.zip` | Unzip, run `SnowOps.exe` |
+| Windows 10/11, x86_64 | `SnowOps-vX-windows-x86_64-setup.exe` or `…-windows-x86_64.zip` | Installer — a normal install; archive — a portable version: unzip, run `SnowOps.exe` |
 | Linux, x86_64 and arm64 | `SnowOps-vX-linux.tar.gz` | `tar xzf`, run `SnowOps.x86_64` or `SnowOps.arm64`; the shared `SnowOps.pck` must stay next to them |
 | macOS 11+, universal | `SnowOps-vX-macos-universal.zip` | Right-click → Open, or `xattr -dr com.apple.quarantine SnowOps.app` |
 
@@ -40,33 +38,44 @@ Builds are not notarized by Apple and there are no store pages yet: this is the 
 
 ## Screenshots
 
+All captured in-game, untouched.
+
 <table>
   <tr>
-    <td><img src="assets/img/shots/01.jpg" alt="Recon from the ridge: the operative watches the base through binoculars"></td>
-    <td><img src="assets/img/shots/02.jpg" alt="The operative on the ladder of a freight wagon rolling toward the base"></td>
+    <td><img src="assets/img/real/03-baza-sverkhu-800.webp" alt="The base from above: hangars, towers, tanks"></td>
+    <td><img src="assets/img/real/11-snaiper-nad-zheleznoi-dorogoi-800.webp" alt="A sniper on a platform above the railway"></td>
   </tr>
   <tr>
-    <td><em>Recon from the ridge. The base below, twelve minutes until the guard changes.</em></td>
-    <td><em>A freight train heading for the base. The best way in without a pass.</em></td>
+    <td><em>The base from above. Hangars, towers, tanks.</em></td>
+    <td><em>Sniper above the railway. Him first.</em></td>
   </tr>
   <tr>
-    <td><img src="assets/img/shots/03.jpg" alt="Base perimeter: a searchlight, the operative pressed against a concrete wall, a guard on the walkway"></td>
-    <td><img src="assets/img/shots/04.jpg" alt="The operative climbing an iced radio tower under the northern lights"></td>
+    <td><img src="assets/img/real/08-oruzheinaya-800.webp" alt="Two soldiers in the armoury by the cage"></td>
+    <td><img src="assets/img/real/10-boets-s-avtomatom-800.webp" alt="A patrolman with a rifle at the checkpoint"></td>
   </tr>
   <tr>
-    <td><em>The perimeter. The searchlight comes back every eight seconds.</em></td>
-    <td><em>The radio tower. While the red light is on, they have comms.</em></td>
+    <td><em>The armoury. Two by the cage.</em></td>
+    <td><em>Patrol at the checkpoint.</em></td>
+  </tr>
+  <tr>
+    <td><img src="assets/img/real/12-shtab-cherez-okno-800.webp" alt="HQ through a window: an officer at his desk, portraits on the wall"></td>
+    <td><img src="assets/img/real/07-patrul-u-sklada-800.webp" alt="A patrolman by store 18"></td>
+  </tr>
+  <tr>
+    <td><em>HQ. An officer at his desk, portraits on the wall.</em></td>
+    <td><em>Store 18. The patrol walks its own route — learn it.</em></td>
   </tr>
 </table>
 
-<p align="center"><img src="assets/img/shots/05.jpg" alt="Base garage: a truck drives out into the blizzard, the operative hides behind crates" width="70%"><br><em>The garage. The truck leaves in a minute, with you or without.</em></p>
-
 ## What is in it
 
-- **Patrols walk their routes.** Guards circle the perimeter on a schedule, cameras turn, searchlights probe the dark. Learn the rhythm, find the gap and slip through. Or trip the alarm and deal with what follows.
-- **The base lives without you.** Freight trains run on time, a truck leaves the garage, the guard changes by the clock. Any of it can be cover if you are in the right place.
-- **Binoculars over rifles.** Open ground and long distances. Look first, plan second, shoot only when there is no other way.
-- **Built for the phone.** Big buttons, a thumb-friendly layout, short sessions. The game asks for no internet, no account and no unnecessary permissions.
+- **The guards have doubts.** A sentry doesn't shoot at first sight. First comes a "?" — he stops, peers, goes to check. In the dark, lying down or keeping still, you take longer to recognise.
+- **The base lives by the book.** Posts change, the orderly keeps his place, the officer makes his rounds. A sentry first calls out "Halt! Get back!" — and only then opens fire.
+- **A silent post gets noticed.** "All posts, report." Take out a sentry and he gets called again, then: "Post not answering. Go check!" If they find the body — alarm.
+- **Light and dark.** A shot into a fusebox kills the lights in the whole building; rooms have ordinary switches. In the dark they spot you later, but they hear the bang.
+- **The zip line is a quiet way.** A cable runs from the radio mast across the base: from afar the guards take you for a shadow. Until the siren goes off.
+- **Lost you — now they search.** They search where they last saw you, look round the corner and into the rooms. Under the siren the whole base knows over the radio where you were spotted.
+- **Also:** cameras raise the alarm in three seconds; footprints in the snow and breath steaming in the cold; SVD with a scope, MP5 with a suppressor, grenades; touch controls sized for thumbs.
 
 ## Status and plans
 

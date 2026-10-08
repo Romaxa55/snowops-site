@@ -1,0 +1,93 @@
+/* SnowOps — служебные страницы (поддержка, политика, соглашение, удаление
+   данных, QR для Android) в игровом виде главной: та же панель вкладок,
+   документ — как досье. Поверх game.css; страницы прокручиваются как обычно. */
+
+.doc { background: radial-gradient(80% 50% at 80% 0%, #15263d 0%, var(--night) 60%) fixed var(--night); }
+.doc main { padding-top: calc(var(--top) + env(safe-area-inset-top)); }
+.doc .top { transform: none; }
+.doc .tab.is-on { color: var(--snow); background: rgba(238, 243, 248, .1); }
+
+/* ---------- Шапка документа ---------- */
+.legal-hero { padding: clamp(36px, 8vh, 88px) 0 clamp(20px, 3vh, 32px); }
+.legal-hero .label { margin-bottom: 12px; }
+.legal-hero h1 { font: 700 clamp(30px, 5vw, 58px)/1.02 var(--brand); letter-spacing: -.005em; text-transform: uppercase; max-width: 900px; }
+.legal-hero p { margin-top: 14px; max-width: 720px; color: var(--mute); font-size: 15.5px; }
+
+/* ---------- Документ: оглавление + текст ---------- */
+.legal { padding-bottom: clamp(48px, 8vh, 96px); }
+.legal .wrap { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: clamp(28px, 4vw, 56px); align-items: start; }
+.legal .wrap > nav {
+  position: sticky; top: calc(var(--top) + env(safe-area-inset-top) + 24px);
+  padding: 14px 16px; border-left: 2px solid var(--red); background: rgba(11, 20, 32, .62);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.legal .wrap > nav::before { content: attr(aria-label); display: block; margin-bottom: 8px; font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--red); }
+.legal__toc li { margin: 4px 0; }
+.legal__toc a { font: 500 12.5px/1.45 var(--mono); letter-spacing: .02em; color: var(--mute); text-decoration: none; }
+.legal__toc a:hover { color: var(--snow); }
+.legal__body { max-width: 760px; font-size: 16.5px; line-height: 1.7; color: rgba(238, 243, 248, .88); }
+.legal__body > :first-child { margin-top: 0; }
+.legal__body h2 {
+  display: flex; align-items: center; gap: 12px; margin: 40px 0 12px; scroll-margin-top: 96px;
+  font: 600 clamp(19px, 2vw, 22px)/1.3 var(--sans); color: var(--snow); text-transform: none; letter-spacing: 0;
+}
+.legal__body h2::before { content: ''; flex: none; width: 16px; height: 2px; background: var(--red); }
+.legal__body h3 { margin: 26px 0 8px; font: 600 17px/1.35 var(--sans); color: var(--snow); }
+.legal__body p, .legal__body ul, .legal__body ol { margin: 0 0 14px; }
+.legal__body ul li { position: relative; padding-left: 20px; margin: 6px 0; }
+.legal__body ul li::before { content: ''; position: absolute; left: 2px; top: .7em; width: 6px; height: 6px; background: var(--red); }
+.legal__body ol { counter-reset: n; }
+.legal__body ol > li { position: relative; padding-left: 32px; margin: 8px 0; counter-increment: n; }
+.legal__body ol > li::before { content: counter(n, decimal-leading-zero); position: absolute; left: 0; top: .15em; font: 500 12px/1.6 var(--mono); color: var(--red); }
+.legal__body a { color: var(--snow); text-decoration-color: rgba(229, 50, 43, .75); text-underline-offset: 3px; }
+.legal__body strong, .legal__body b { color: var(--snow); }
+.legal__body code { font: 500 .9em var(--mono); padding: 1px 5px; border-radius: 4px; background: rgba(238, 243, 248, .08); }
+.callout { padding: 16px 18px; border: 1px solid var(--line); border-left: 3px solid var(--red); border-radius: 6px; background: rgba(43, 61, 87, .28); color: var(--snow); }
+@media (max-width: 860px) {
+  .legal .wrap { grid-template-columns: 1fr; }
+  .legal .wrap > nav { position: static; }
+  .legal__toc { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  .legal__toc li { margin: 0; }
+  .legal__body { font-size: 16px; }
+}
+
+/* ---------- Подвал ---------- */
+.doc .end { padding: 40px 0 calc(32px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: #070d16; color: var(--mute); }
+.doc .end__title { font: 700 20px/1 var(--brand); text-transform: uppercase; letter-spacing: .1em; color: var(--snow); }
+.doc .end__links { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 18px; font-size: 14px; }
+.doc .end__links a { text-decoration: none; }
+.doc .end__links a:hover, .doc .end__links a[aria-current] { color: var(--snow); }
+.doc .end__legal { margin-top: 16px; font-size: 13px; max-width: 760px; }
+
+/* ---------- QR для Android: карточка снаряжения ---------- */
+.get { min-height: calc(100svh - var(--top) - env(safe-area-inset-top)); display: grid; place-items: center; padding: clamp(24px, 6vh, 64px) 0; }
+.get__card {
+  position: relative; max-width: 500px; margin: 0 auto; padding: 30px clamp(18px, 4vw, 34px) 26px; text-align: center;
+  border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(180deg, rgba(43, 61, 87, .38), rgba(11, 20, 32, .3));
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .4);
+}
+.get__card::before { content: ''; position: absolute; left: 22px; right: 22px; top: -1px; height: 2px; background: var(--red); }
+.get h1 { font: 700 clamp(26px, 5vw, 38px)/1.05 var(--brand); text-transform: uppercase; letter-spacing: .02em; }
+.get__qr { position: relative; width: max-content; margin: 24px auto 12px; padding: 14px; background: #fff; border-radius: 8px; }
+.get__qr::after {
+  content: ''; position: absolute; inset: -10px; pointer-events: none;
+  background:
+    linear-gradient(var(--red), var(--red)) 0 0 / 18px 2px no-repeat, linear-gradient(var(--red), var(--red)) 0 0 / 2px 18px no-repeat,
+    linear-gradient(var(--red), var(--red)) 100% 0 / 18px 2px no-repeat, linear-gradient(var(--red), var(--red)) 100% 0 / 2px 18px no-repeat,
+    linear-gradient(var(--red), var(--red)) 0 100% / 18px 2px no-repeat, linear-gradient(var(--red), var(--red)) 0 100% / 2px 18px no-repeat,
+    linear-gradient(var(--red), var(--red)) 100% 100% / 18px 2px no-repeat, linear-gradient(var(--red), var(--red)) 100% 100% / 2px 18px no-repeat;
+}
+.get__qr canvas { display: block; width: 220px; height: 220px; }
+.get__scan { font: 500 12px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }
+.btn--primary { background: var(--red); border-color: var(--red); color: #fff; }
+.btn--primary:hover { background: #c92a24; border-color: #c92a24; }
+.get__btn { display: flex; width: 100%; margin-top: 22px; padding: 14px 16px; font-size: 16px; }
+.get__btn.is-waiting { opacity: .65; pointer-events: none; }
+.get__meta { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 14px; margin-top: 10px; font: 500 12px/1.5 var(--mono); color: var(--mute); }
+.get__steps { max-width: 400px; margin: 20px auto 0; text-align: left; font-size: 14.5px; color: rgba(238, 243, 248, .85); counter-reset: s; }
+.get__steps li { position: relative; padding-left: 30px; margin: 7px 0; counter-increment: s; }
+.get__steps li::before { content: counter(s, decimal-leading-zero); position: absolute; left: 0; top: .1em; font: 500 12px/1.6 var(--mono); color: var(--red); }
+.get__note { margin-top: 18px; font-size: 13.5px; color: var(--mute); }
+.get__lang { margin-top: 16px; font: 500 12px/1 var(--mono); letter-spacing: .08em; color: var(--mute); }
+.get__lang a { color: var(--snow); }
+@media (max-width: 480px) { .get__qr canvas { width: 200px; height: 200px; } }
