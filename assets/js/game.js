@@ -11,9 +11,31 @@
   var all = function (sel, el) { return Array.prototype.slice.call((el || document).querySelectorAll(sel)); };
   var store = (function () { try { return window.sessionStorage; } catch (e) { return null; } })();
   var pad2 = function (n) { return String(n).padStart(2, '0'); };
+  /* Язык страницы и путь к общим файлам (en/ лежит на уровень ниже). */
+  var EN = (root.getAttribute('lang') || 'ru').slice(0, 2) === 'en';
+  var ROOT = root.getAttribute('data-root') || '';
+  var T = EN ? {
+    loading: 'Loading', back: 'Returning', page: 'Page', report: 'Report', cam: 'CAM', slot: 'Slot',
+    test: 'Test build ', version: 'Version ', from: ' from ', early: '. Early build: it may crash and stutter. ',
+    rel: 'Release and checksums', mb: ' MB', locale: 'en-GB',
+    glyphs: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&/<>'
+  } : {
+    loading: 'Загрузка', back: 'Возврат', page: 'Стр.', report: 'Донесение', cam: 'КАМ', slot: 'Слот',
+    test: 'Тестовая сборка ', version: 'Версия ', from: ' от ', early: '. Ранняя версия: может падать и тормозить. ',
+    rel: 'Релиз и контрольные суммы', mb: ' МБ', locale: 'ru-RU',
+    glyphs: 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ0123456789#%&/<>'
+  };
 
   /* ---------- ЗАГРУЗКА МИССИИ ---------- */
-  var TIPS = [
+  var TIPS = EN ? [
+    'In the dark they spot you later.',
+    'A sentry calls out "Halt! Get back!" first — and only then opens fire.',
+    'A post that stops answering the radio gets checked.',
+    'A shot into a fusebox kills the lights in the whole building. But they hear the bang.',
+    'On the zip line, from afar, you are just a shadow. Until the siren goes off.',
+    'A suppressed shot carries a lot less far.',
+    'If they find a body, the alarm goes up.'
+  ] : [
     'В темноте тебя замечают позже.',
     'Часовой сначала окликнет: «Стой, назад!» — и только потом откроет огонь.',
     'Пост, который не отвечает по рации, пойдут проверять.',
@@ -57,7 +79,7 @@
   var visited = {};
   try { visited = JSON.parse((store && store.getItem('snowops-goals')) || '{}') || {}; } catch (e) { visited = {}; }
 
-  var GLYPHS = 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ0123456789#%&/<>';
+  var GLYPHS = T.glyphs;
   function decode(h) {
     if (!h || reduce) return;
     var text = h.getAttribute('data-text') || h.textContent;
@@ -112,7 +134,7 @@
     if (reduce || cur === null) { show(id); return; }
     busy = true;
     var n = ORDER.indexOf(id);
-    sceneNum.textContent = n >= 0 ? 'Загрузка · ' + pad2(n + 1) + ' / ' + pad2(ORDER.length) : 'Возврат';
+    sceneNum.textContent = n >= 0 ? T.loading + ' · ' + pad2(n + 1) + ' / ' + pad2(ORDER.length) : T.back;
     sceneName.textContent = screens[id].getAttribute('data-mark');
     scene.classList.remove('is-on');
     void scene.offsetWidth;
@@ -176,7 +198,7 @@
     var li = items[intelPager.get()];
     items.forEach(function (it) { it.classList.toggle('is-on', it === li); });
     noise(iScreen);
-    var src = 'assets/img/real/' + li.getAttribute('data-shot') + '-1600.webp';
+    var src = ROOT + 'assets/img/real/' + li.getAttribute('data-shot') + '-1600.webp';
     var img = new Image();
     img.onload = img.onerror = function () {
       iImg.src = src;
@@ -218,10 +240,10 @@
   });
 
   var STEP = {
-    briefing: { on: function () { return mobile.matches; }, n: function () { return briefPager.count(); }, at: function () { return briefPager.get(); }, set: function (i, d) { briefPager.set(i, d); }, word: 'Стр.' },
-    intel: { on: function () { return true; }, n: function () { return items.length; }, at: function () { return intelPager.get(); }, set: intelSet, word: 'Донесение' },
-    recon: { on: function () { return true; }, n: function () { return mons.length; }, at: function () { return rAt; }, set: reconSet, word: 'КАМ' },
-    download: { on: function () { return mobile.matches; }, n: function () { return gearPager.count(); }, at: function () { return gearPager.get(); }, set: function (i, d) { gearPager.set(i, d); }, word: 'Слот' }
+    briefing: { on: function () { return mobile.matches; }, n: function () { return briefPager.count(); }, at: function () { return briefPager.get(); }, set: function (i, d) { briefPager.set(i, d); }, word: T.page },
+    intel: { on: function () { return true; }, n: function () { return items.length; }, at: function () { return intelPager.get(); }, set: intelSet, word: T.report },
+    recon: { on: function () { return true; }, n: function () { return mons.length; }, at: function () { return rAt; }, set: reconSet, word: T.cam },
+    download: { on: function () { return mobile.matches; }, n: function () { return gearPager.count(); }, at: function () { return gearPager.get(); }, set: function (i, d) { gearPager.set(i, d); }, word: T.slot }
   };
   var hPrev = $('hint-prev'), hNext = $('hint-next'), hCount = $('hint-count');
   function stepper() { var s = STEP[cur]; return s && s.on() ? s : null; }
@@ -316,9 +338,9 @@
   }, 1000);
 
   /* ---------- СНАРЯЖЕНИЕ: последний релиз ---------- */
-  function mb(b) { return Math.round(b / 1048576) + ' МБ'; }
+  function mb(b) { return Math.round(b / 1048576) + T.mb; }
   function ruDate(iso) {
-    try { return new Date(iso).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).replace(/\s*г\.$/, ''); }
+    try { return new Date(iso).toLocaleDateString(T.locale, { day: 'numeric', month: 'long', year: 'numeric' }).replace(/\s*г\.$/, ''); }
     catch (e) { return String(iso).slice(0, 10); }
   }
   var FILES = {
@@ -350,12 +372,12 @@
         if (zip && setup && setup.textContent !== '—') setup.textContent += ' / zip ' + mb(zip.size);
         rel.textContent = '';
         var b = document.createElement('b');
-        b.textContent = (r.prerelease ? 'Тестовая сборка ' : 'Версия ') + r.tag_name;
+        b.textContent = (r.prerelease ? T.test : T.version) + r.tag_name;
         rel.appendChild(b);
-        rel.appendChild(document.createTextNode(' от ' + ruDate(r.published_at) + '. Ранняя версия: может падать и тормозить. '));
+        rel.appendChild(document.createTextNode(T.from + ruDate(r.published_at) + T.early));
         var link = document.createElement('a');
         link.href = r.html_url;
-        link.textContent = 'Релиз и контрольные суммы';
+        link.textContent = T.rel;
         rel.appendChild(link);
         var ver = $('ver');
         if (ver) ver.textContent = r.tag_name;
