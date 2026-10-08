@@ -1,20 +1,20 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" class="no-js">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SnowOps — тактический стелс-шутер для телефона</title>
-  <meta name="description" content="SnowOps — одиночный стелс-шутер про оперативника на полярной военной базе. Патрули, поезда по расписанию, бинокль и много снега. Без интернета, рекламы и покупок. 16+">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SnowOps — стелс-шутер про одну базу и одного человека</title>
+  <meta name="description" content="SnowOps — одиночный стелс-шутер на заснеженной военной базе. Охрана живёт по уставу: меняет посты, докладывает по рации, ищет пропавших. Демо для Android, Windows, Linux и macOS. Без интернета, рекламы и покупок. 16+">
   <meta name="theme-color" content="#0b1420">
   <link rel="canonical" href="https://snowops.game/">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SnowOps">
-  <meta property="og:title" content="SnowOps — тактический стелс-шутер для телефона">
-  <meta property="og:description" content="База за Полярным кругом. Один оперативник. Никто не должен узнать, что ты здесь был.">
+  <meta property="og:title" content="SnowOps — стелс-шутер про одну базу и одного человека">
+  <meta property="og:description" content="Вертолёт, крыша идущего поезда, прыжок через забор — и ты внутри. Пройди так, чтобы никто не узнал.">
   <meta property="og:url" content="https://snowops.game/">
   <meta property="og:image" content="https://snowops.game/assets/img/og.jpg">
-  <meta property="og:image:alt" content="Заснеженная военная база ночью, радиовышка с красным маяком">
+  <meta property="og:image:alt" content="Радиовышка над заснеженной военной базой, кадр из игры">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -22,8 +22,13 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 
+  <link rel="preload" href="assets/fonts/Tektur-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/img/real/01-radiovyshka-i-baza-1600.webp" as="image" type="image/webp" media="(min-width: 801px)">
+  <link rel="preload" href="assets/img/real/01-radiovyshka-i-baza-800.webp" as="image" type="image/webp" media="(max-width: 800px)">
   <link rel="stylesheet" href="assets/css/fonts.css">
-  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="stylesheet" href="assets/css/fonts-geist.css?v=11g">
+  <link rel="stylesheet" href="assets/css/game.css?v=11g">
+  <script>document.documentElement.className = 'js';</script>
 
   <script type="application/ld+json">
   {
@@ -32,10 +37,10 @@
     "name": "SnowOps",
     "url": "https://snowops.game/",
     "image": "https://snowops.game/assets/img/og.jpg",
-    "description": "Одиночный тактический стелс-шутер про оперативника на полярной военной базе.",
+    "description": "Одиночный стелс-шутер на заснеженной военной базе.",
     "genre": ["Стелс", "Шутер", "Тактическая игра"],
-    "gamePlatform": ["Android", "iOS"],
-    "operatingSystem": "Android, iOS",
+    "gamePlatform": ["Android", "Windows", "Linux", "macOS"],
+    "operatingSystem": "Android, Windows, Linux, macOS",
     "applicationCategory": "GameApplication",
     "inLanguage": "ru",
     "contentRating": "16+",
@@ -45,231 +50,306 @@
 </head>
 <body>
 
-<nav class="nav" id="nav" aria-label="Основная навигация">
-  <div class="wrap">
-    <a class="brand" href="#top" aria-label="SnowOps, на главную">
-      <span class="brand__mark">
-        <img src="assets/img/icon-192.png" alt="" width="34" height="34">
-        <span class="brand__beacon" aria-hidden="true"></span>
-      </span>
-      SnowOps
-    </a>
-    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links">Меню</button>
-    <ul class="nav__links" id="nav-links">
-      <li><a href="#about">Об игре</a></li>
-      <li><a href="#features">Что здесь есть</a></li>
-      <li><a href="#shots">Кадры</a></li>
-      <li><a href="#trailer">Трейлер</a></li>
-      <li><a href="#download">Скачать демо</a></li>
-      <li><a href="support.html">Поддержка</a></li>
-      <li class="nav__lang"><a href="en/index.html" hreflang="en" lang="en">English</a></li>
-    </ul>
+<a class="skip" href="#briefing">К содержанию</a>
+
+<!-- ЗАГРУЗКА: только с JS и только при первом заходе за сессию (game.js). -->
+<div class="boot" id="boot" aria-hidden="true">
+  <div class="boot__inner">
+    <p class="boot__logo">SNOWOPS</p>
+    <p class="boot__line"><span>Загрузка миссии</span><span class="boot__pct" id="boot-pct">0%</span></p>
+    <div class="boot__bar"><i id="boot-bar"></i></div>
+    <p class="boot__tip"><b>Совет.</b> <span id="boot-tip">В темноте тебя замечают позже.</span></p>
+    <p class="boot__skip">Нажми любую клавишу</p>
   </div>
-</nav>
+</div>
+
+<!-- HUD поверх страницы: украшение, дублирует навигацию, для читалок скрыт. -->
+<div class="hud" aria-hidden="true">
+  <div class="hud__compass"><div class="hud__strip" id="hud-strip"></div><i class="hud__needle"></i></div>
+  <div class="hud__goals" id="hud-goals">
+    <p class="hud__title">Цели миссии</p>
+    <ol>
+      <li data-goal="briefing">Изучить брифинг</li>
+      <li data-goal="intel">Понять охрану</li>
+      <li data-goal="recon">Провести разведку</li>
+      <li data-goal="log">Прочитать журнал</li>
+      <li data-goal="download">Взять снаряжение</li>
+    </ol>
+  </div>
+  <div class="hud__eye" id="hud-eye">
+    <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M2 12C8 4 14 1 20 1s12 3 18 11c-6 8-12 11-18 11S8 20 2 12Z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="20" cy="12" r="4.5" fill="currentColor"/></svg>
+    <div class="hud__meter"><i id="hud-meter"></i></div>
+    <span class="hud__state" id="hud-state">Скрытно</span>
+  </div>
+  <div class="hud__ammo"><b id="hud-sec">00</b><span>/</span><span id="hud-total">05</span></div>
+  <div class="hud__toast" id="hud-toast"></div>
+</div>
+
+<header class="bar" id="bar">
+  <a class="bar__logo" href="#top">SNOWOPS<i></i></a>
+  <p class="bar__goal" aria-hidden="true"><b>Цель:</b> <span id="bar-goal">изучить брифинг</span></p>
+  <a class="bar__cta" href="#download">Скачать демо</a>
+  <button class="bar__pause" id="pause-open" type="button" aria-controls="pause" aria-expanded="false"><span>Меню</span><kbd>Esc</kbd></button>
+</header>
+
+<!-- ПАУЗА: меню разделов, как в игре. -->
+<div class="pause" id="pause" role="dialog" aria-modal="true" aria-labelledby="pause-title" hidden>
+  <div class="pause__panel">
+    <p class="pause__title" id="pause-title">Пауза</p>
+    <nav aria-label="Разделы">
+      <ul class="menu" id="pausemenu">
+        <li><button class="menu__item" type="button" data-close>Продолжить</button></li>
+        <li><a class="menu__item" href="#briefing">Брифинг</a></li>
+        <li><a class="menu__item" href="#intel">Как думает охрана</a></li>
+        <li><a class="menu__item" href="#recon">Разведка</a></li>
+        <li><a class="menu__item" href="#log">Журнал изменений</a></li>
+        <li><a class="menu__item menu__item--go" href="#download">Скачать демо</a></li>
+        <li><a class="menu__item" href="support.html">Поддержка</a></li>
+        <li><a class="menu__item" href="en/" hreflang="en" lang="en">English</a></li>
+      </ul>
+    </nav>
+    <p class="keys"><kbd>↑</kbd><kbd>↓</kbd> выбор · <kbd>Enter</kbd> подтвердить · <kbd>Esc</kbd> назад</p>
+  </div>
+</div>
 
 <main id="top">
 
-  <header class="hero" id="hero">
-    <div class="hero__art" aria-hidden="true">
-      <picture>
-        <source srcset="assets/img/hero.webp" type="image/webp">
-        <img src="assets/img/hero.jpg" alt="" width="2400" height="1336" fetchpriority="high" decoding="async">
-      </picture>
-      <span class="beacon" style="--x: 55%; --y: 13.17%"></span>
-      <span class="mark" style="--x: 55%; --y: 13.17%"><b>Радиовышка</b><small>1 240 м. Маяк работает</small></span>
-      <span class="mark mark--below" style="--x: 69.5%; --y: 55.6%"><b>Вход в бункер</b><small>620 м. Свет горит</small></span>
+  <!-- ГЛАВНОЕ МЕНЮ -->
+  <section class="title" aria-labelledby="title-name">
+    <picture class="title__bg">
+      <source media="(max-width: 800px)" srcset="assets/img/real/01-radiovyshka-i-baza-800.webp">
+      <img src="assets/img/real/01-radiovyshka-i-baza-1600.webp" alt="Радиовышка с тросом над заснеженной базой, рельсы уходят к ангарам. Кадр из игры." width="1600" height="900" fetchpriority="high">
+    </picture>
+    <div class="title__shade"></div>
+    <div class="title__body wrap">
+      <p class="tag"><i class="dot"></i>ALPHA.11 · Демо · Работает офлайн</p>
+      <h1 class="title__name" id="title-name">SNOWOPS</h1>
+      <p class="title__sub">Стелс-шутер про одну базу и одного человека</p>
+      <p class="title__lead">Вертолёт, крыша идущего поезда, прыжок через забор — и ты внутри. Тридцать шесть человек охраны живут по уставу: меняют посты, докладывают по рации, ищут пропавших. Пройди так, чтобы никто не узнал.</p>
+      <nav class="mainmenu" aria-label="Главное меню">
+        <ul class="menu" id="mainmenu">
+          <li><a class="menu__item menu__item--go" href="#download">Начать миссию <small>скачать демо</small></a></li>
+          <li><a class="menu__item" href="#briefing">Брифинг</a></li>
+          <li><a class="menu__item" href="#intel">Как думает охрана</a></li>
+          <li><a class="menu__item" href="#recon">Разведка</a></li>
+          <li><a class="menu__item" href="#log">Журнал изменений</a></li>
+          <li><a class="menu__item" href="en/" hreflang="en" lang="en">English</a></li>
+        </ul>
+      </nav>
+      <p class="keys title__keys"><kbd>↑</kbd><kbd>↓</kbd> выбор · <kbd>Enter</kbd> начать · <kbd>Esc</kbd> пауза</p>
     </div>
-    <div class="hero__veil" aria-hidden="true"></div>
+    <p class="title__ver"><span id="ver">v0.1.0-alpha.11</span> · Android · Windows · Linux · macOS · <b>16+</b></p>
+  </section>
 
-    <div class="wrap">
-      <div class="hero__content">
-        <h1 class="hero__title">SnowOps<span>Тактический стелс-шутер для телефона</span></h1>
-        <p class="hero__lead">База за Полярным кругом. Один оперативник. Никто не должен узнать, что ты здесь был.</p>
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="#download">Скачать демо</a>
-          <a class="btn btn--ghost" href="#trailer">Смотреть трейлер</a>
-        </div>
-        <p class="hero__note">Демо для Android, Windows, Linux и macOS. Без интернета, рекламы и покупок. 16+</p>
-      </div>
-    </div>
-  </header>
-
-  <section class="section" id="about" aria-labelledby="about-title">
-    <div class="wrap about">
-      <div class="about__text">
-        <h2 id="about-title">Тихо зашёл. Тихо вышел.</h2>
-        <p>SnowOps — одиночная кампания про оперативника, которого высаживают у полярной военной базы с одним заданием: пройти внутрь, сделать дело и исчезнуть до рассвета.</p>
-        <p>Здесь нет укрытий с регенерацией и стрелочки к цели. Есть бинокль, карта, патрули по расписанию и много снега, на котором тебя хорошо видно. Как в шутерах конца девяностых, только на экране телефона.</p>
+  <!-- БРИФИНГ -->
+  <section class="sec sec--paper" id="briefing" aria-labelledby="briefing-title" data-mark="Брифинг">
+    <div class="wrap brief">
+      <div class="brief__doc">
+        <p class="label">Миссия 01 · Совершенно секретно</p>
+        <h2 id="briefing-title">Тихо зашёл. Тихо вышел.</h2>
+        <p class="brief__lead">SnowOps — одиночная миссия на заснеженной военной базе за Полярным кругом. Тебя сбрасывают с вертолёта на крышу поезда, дальше — сам: через забор, мимо вышек и патрулей — к грузовику у главного входа.</p>
+        <p>Здесь нет стрелки к цели и здоровья, которое восстанавливается за укрытием. Есть глаза охраны, которые надо обмануть, и тишина, которую легко нарушить одним выстрелом.</p>
+        <ol class="orders">
+          <li><b>Высадка</b><span>С вертолёта на крышу идущего поезда.</span></li>
+          <li><b>Проникновение</b><span>Через забор, мимо вышек и патрулей.</span></li>
+          <li><b>Цель</b><span>Грузовик у главного входа.</span></li>
+          <li><b>Совет</b><span>Чтобы никто не узнал, что ты здесь был.</span></li>
+        </ol>
         <ul class="facts">
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>
-            <span>Одиночная кампания, без онлайна и чужих людей в матче</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/><path d="M3 3l18 18"/></svg>
-            <span>Играется без интернета: в самолёте, в метро, на даче</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12l8.5-8.5H20v8.5L11.5 20.5z"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><path d="M4 4l16 16"/></svg>
-            <span>Нет рекламы, покупок и таймеров на энергию</span>
-          </li>
+          <li>Миссия целиком: от прыжка с вертолёта до отъезда на грузовике</li>
+          <li>Играется без интернета: в самолёте, в метро, на даче</li>
+          <li>Без рекламы, покупок и таймеров на энергию</li>
         </ul>
       </div>
+      <figure class="brief__photo">
+        <img src="assets/img/real/05-snaiper-na-vyshke-800.webp" srcset="assets/img/real/05-snaiper-na-vyshke-800.webp 800w, assets/img/real/05-snaiper-na-vyshke-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 460px" alt="Снайпер в белом камуфляже на площадке радиовышки. Кадр из игры." width="800" height="450" loading="lazy">
+        <figcaption>Фото 1. Снайпер на радиовышке. Видит далеко.</figcaption>
+        <span class="stamp">Секретно</span>
+      </figure>
+    </div>
+  </section>
 
-      <div class="device" aria-hidden="true">
-        <div class="device__screen">
-          <!-- Чтобы подставить кадр: первым элементом внутри .frame добавь <img class="frame__img" src="..." alt=""> -->
-          <div class="frame">
-            <img class="frame__img" src="assets/img/shots/device.jpg" alt="" width="1280" height="590">
-            <div class="frame__mark">
-              <svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg>
-            </div>
+  <!-- КАК ДУМАЕТ ОХРАНА: камера наблюдения -->
+  <section class="sec" id="intel" aria-labelledby="intel-title" data-mark="Охрана">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">Разведданные · 6 донесений</p>
+        <h2 id="intel-title">Как думает охрана</h2>
+        <p>Мы делаем игру, в которую сами хотели бы играть: медленную и внимательную. Охрана здесь не мишени, а люди со своим распорядком.</p>
+      </div>
+      <div class="intel">
+        <ol class="intel__list" id="intel-list">
+          <li class="intel__item is-on" data-shot="10-boets-s-avtomatom" data-cam="КАМ 01 · КПП" data-mood="?">
+            <button type="button" aria-controls="intel-screen"><span class="intel__n">01</span><span class="intel__t">Охрана сомневается</span></button>
+            <p>Часовой не стреляет с первого взгляда. Сначала «?» — остановится, всмотрится, пойдёт проверить. В темноте, лёжа и без движения тебя узнают дольше. Успеешь уйти — пронесло.</p>
+            <img class="intel__thumb" src="assets/img/real/10-boets-s-avtomatom-800.webp" alt="Боец с автоматом у КПП. Кадр из игры." width="800" height="450" loading="lazy">
+          </li>
+          <li class="intel__item" data-shot="09-kazarma-boitsy" data-cam="КАМ 02 · Казарма" data-mood="·">
+            <button type="button" aria-controls="intel-screen"><span class="intel__n">02</span><span class="intel__t">База живёт по уставу</span></button>
+            <p>Посты меняются, дневальный на своём месте, офицер обходит здания. Часовой сначала окликнет: «Стой, назад!» — и только потом откроет огонь. Всё по уставу караульной службы.</p>
+            <img class="intel__thumb" src="assets/img/real/09-kazarma-boitsy-800.webp" alt="Двое бойцов в казарме у стенда «Боевой листок». Кадр из игры." width="800" height="450" loading="lazy">
+          </li>
+          <li class="intel__item" data-shot="06-chasovoi-na-vyshke" data-cam="КАМ 03 · Вышка" data-mood="?">
+            <button type="button" aria-controls="intel-screen"><span class="intel__n">03</span><span class="intel__t">Пост молчит — хватятся</span></button>
+            <p>«Всем постам — доложить обстановку». Посты по очереди отвечают: «Без происшествий». Убрал часового — его вызовут ещё раз, потом: «Пост не отвечает. Проверить!» Найдут тело — тревога.</p>
+            <img class="intel__thumb" src="assets/img/real/06-chasovoi-na-vyshke-800.webp" alt="Часовой в будке сторожевой вышки. Кадр из игры." width="800" height="450" loading="lazy">
+          </li>
+          <li class="intel__item" data-shot="04-kazarma-vnutri" data-cam="КАМ 04 · Казарма" data-mood="·">
+            <button type="button" aria-controls="intel-screen"><span class="intel__n">04</span><span class="intel__t">Свет и темнота</span></button>
+            <p>Выстрел в щиток на стене гасит всё здание, а свет в комнатах — обычные выключатели у дверей. В темноте тебя замечают позже. Но хлопок внутри услышат.</p>
+            <img class="intel__thumb" src="assets/img/real/04-kazarma-vnutri-800.webp" alt="Комната в казарме: койка, табурет, шкаф. Кадр из игры." width="800" height="450" loading="lazy">
+          </li>
+          <li class="intel__item" data-shot="01-radiovyshka-i-baza" data-cam="КАМ 05 · Радиовышка" data-mood="?">
+            <button type="button" aria-controls="intel-screen"><span class="intel__n">05</span><span class="intel__t">Трос — тихий путь</span></button>
+            <p>С радиовышки через базу тянется трос. Издалека охрана примет тебя за тень и только насторожится. Но если сирена уже воет — база охотится, и тень не спасёт.</p>
+            <img class="intel__thumb" src="assets/img/real/01-radiovyshka-i-baza-800.webp" alt="Радиовышка и трос над базой. Кадр из игры." width="800" height="450" loading="lazy">
+          </li>
+          <li class="intel__item" data-shot="07-patrul-u-sklada" data-cam="КАМ 06 · Склад 18" data-mood="!">
+            <button type="button" aria-controls="intel-screen"><span class="intel__n">06</span><span class="intel__t">Потеряли — ищут</span></button>
+            <p>Тебя не забывают через десять секунд. Ищут там, где видели в последний раз, заглядывают за угол и в комнаты. Под сиреной вся база по рации знает, где тебя заметили.</p>
+            <img class="intel__thumb" src="assets/img/real/07-patrul-u-sklada-800.webp" alt="Патрульный у склада номер 18. Кадр из игры." width="800" height="450" loading="lazy">
+          </li>
+        </ol>
+        <div class="intel__screen monitor" id="intel-screen" aria-live="polite">
+          <img id="intel-img" src="assets/img/real/10-boets-s-avtomatom-1600.webp" alt="" width="1600" height="900" loading="lazy">
+          <div class="monitor__ui">
+            <span class="monitor__rec"><i></i>REC</span>
+            <span class="monitor__cam" id="intel-cam">КАМ 01 · КПП</span>
+            <span class="monitor__time" id="intel-time">06:00:00</span>
+            <span class="monitor__mood" id="intel-mood">?</span>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="section section--steel" id="features" aria-labelledby="features-title">
-    <div class="wrap">
-      <div class="section__head">
-        <h2 id="features-title">Что здесь есть</h2>
-        <p>Мы делаем игру, в которую сами хотели бы поиграть в дороге: медленную, внимательную, без таймеров на энергию и без чувства, что тебя торопят.</p>
-      </div>
-      <ul class="dossier">
-        <li>
-          <h3>Патрули ходят по маршрутам</h3>
-          <p>Охрана обходит периметр по расписанию, камеры поворачиваются, прожекторы ищут в темноте. Запомни ритм, найди дыру и проскользни. Или подними тревогу и разбирайся с последствиями.</p>
-        </li>
-        <li>
-          <h3>База живёт без тебя</h3>
-          <p>Товарные составы идут по расписанию, грузовик выезжает из гаража, караул меняется по часам. Любое из этого можно использовать как прикрытие, если оказаться в нужном месте вовремя.</p>
-        </li>
-        <li>
-          <h3>Бинокль важнее автомата</h3>
-          <p>Открытые пространства и дальние дистанции. Сначала рассмотри, потом планируй, потом стреляй, если без этого не обойтись. Патронов не хватит на всех.</p>
-        </li>
-        <li>
-          <h3>Сделано под телефон</h3>
-          <p>Крупные кнопки, раскладка под большие пальцы, короткие сессии. Играется без интернета, не просит аккаунта и лишних разрешений.</p>
-        </li>
+      <ul class="kit">
+        <li><b>Камеры и пульт</b><span>Камера поднимает тревогу за три секунды. На посту охраны — монитор с их картинкой.</span></li>
+        <li><b>Снег помнит</b><span>Следы на снегу, пар изо рта на морозе, снегопад над базой.</span></li>
+        <li><b>Оружие</b><span>СВД с оптикой, MP5 с глушителем, гранаты. Выстрел с глушителем слышно намного ближе.</span></li>
+        <li><b>Под телефон</b><span>Сенсорное управление под большие пальцы. Работает без интернета.</span></li>
       </ul>
     </div>
   </section>
 
-  <section class="section" id="shots" aria-labelledby="shots-title">
+  <!-- РАЗВЕДКА: стена мониторов -->
+  <section class="sec sec--steel" id="recon" aria-labelledby="recon-title" data-mark="Разведка">
     <div class="wrap">
-      <div class="section__head section__head--row">
-        <h2 id="shots-title">Кадры</h2>
-        <div class="shots-nav">
-          <span class="shots-nav__count" id="shots-count" aria-live="polite">1 / 5</span>
-          <button class="shots-nav__btn" type="button" data-dir="-1" aria-label="Предыдущий кадр"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-          <button class="shots-nav__btn" type="button" data-dir="1" aria-label="Следующий кадр"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-        </div>
+      <div class="head">
+        <p class="label">Пульт охраны · 8 каналов</p>
+        <h2 id="recon-title">Разведка</h2>
+        <p>Всё снято в игре, без доработки.</p>
       </div>
-      <div class="shots" id="shots-track" role="group" tabindex="0" aria-label="Кадры из игры, прокручиваются по горизонтали">
-        <!-- Кадры 01–05 генерятся tools/qwen_image.py по tools/image_manifest.json; сюда попадают через <img class="frame__img"> -->
-        <figure class="shot">
-          <div class="frame"><img class="frame__img" src="assets/img/shots/01.jpg" alt="Оперативник в белом камуфляже лежит на гребне с биноклем, внизу заснеженная база: железная дорога, бункеры, грузовик с фарами и радиовышка с красным маяком" width="1600" height="892"><div class="frame__mark"><svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg></div></div>
-          <figcaption>Разведка с гребня. База внизу, до смены караула двенадцать минут.</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="frame"><img class="frame__img" src="assets/img/shots/02.jpg" alt="Оперативник в белом камуфляже висит на лестнице ржавого товарного вагона, состав идёт к базе, снег летит из-под колёс" width="1600" height="892" loading="lazy"><div class="frame__mark"><svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg></div></div>
-          <figcaption>Товарный состав идёт к базе. Лучший способ попасть внутрь без пропуска.</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="frame"><img class="frame__img" src="assets/img/shots/03.jpg" alt="Периметр базы ночью: прожектор на вышке светит поверх забора, оперативник прижался к бетонной стене под лучом, охранник с автоматом на мостике" width="1600" height="892" loading="lazy"><div class="frame__mark"><svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg></div></div>
-          <figcaption>Периметр. Прожектор возвращается каждые восемь секунд.</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="frame"><img class="frame__img" src="assets/img/shots/04.jpg" alt="Оперативник поднимается по обледеневшей лестнице радиовышки, наверху красный маяк, за спиной северное сияние и огни базы" width="1600" height="892" loading="lazy"><div class="frame__mark"><svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg></div></div>
-          <figcaption>Радиовышка. Пока горит красный, связь у них есть.</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="frame"><img class="frame__img" src="assets/img/shots/05.jpg" alt="Гараж базы: военный грузовик с включёнными фарами выезжает в метель, оперативник спрятался за ящиками под лампой" width="1600" height="892" loading="lazy"><div class="frame__mark"><svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="36" cy="36" r="22"/><circle cx="36" cy="36" r="2" fill="currentColor"/><path d="M36 4v14M36 54v14M4 36h14M54 36h14"/></svg></div></div>
-          <figcaption>Гараж. Грузовик уходит через минуту, с тобой или без.</figcaption>
-        </figure>
+      <ul class="wall" id="wall">
+        <li><a class="monitor" href="assets/img/real/03-baza-sverkhu-1600.webp" data-cap="База сверху. Ангары, вышки, цистерны."><img src="assets/img/real/03-baza-sverkhu-800.webp" alt="База сверху: ангары, вышки, цистерны. Кадр из игры." width="800" height="450" loading="lazy"><span class="monitor__cam">КАМ 01</span></a></li>
+        <li><a class="monitor" href="assets/img/real/11-snaiper-nad-zheleznoi-dorogoi-1600.webp" data-cap="Снайпер над железной дорогой. Сначала его."><img src="assets/img/real/11-snaiper-nad-zheleznoi-dorogoi-800.webp" alt="Снайпер на площадке над железной дорогой. Кадр из игры." width="800" height="450" loading="lazy"><span class="monitor__cam">КАМ 02</span></a></li>
+        <li><a class="monitor" href="assets/img/real/08-oruzheinaya-1600.webp" data-cap="Оружейная. Двое у решётки."><img src="assets/img/real/08-oruzheinaya-800.webp" alt="Двое бойцов в оружейной у решётки. Кадр из игры." width="800" height="450" loading="lazy"><span class="monitor__cam">КАМ 03</span></a></li>
+        <li><a class="monitor" href="assets/img/real/10-boets-s-avtomatom-1600.webp" data-cap="Патруль у КПП."><img src="assets/img/real/10-boets-s-avtomatom-800.webp" alt="Патрульный с автоматом у КПП. Кадр из игры." width="800" height="450" loading="lazy"><span class="monitor__cam">КАМ 04</span></a></li>
+        <li><a class="monitor" href="assets/img/real/12-shtab-cherez-okno-1600.webp" data-cap="Штаб. Офицер за столом, портреты на стене."><img src="assets/img/real/12-shtab-cherez-okno-800.webp" alt="Штаб через окно: офицер за столом, портреты на стене. Кадр из игры." width="800" height="450" loading="lazy"><span class="monitor__cam">КАМ 05</span></a></li>
+        <li><a class="monitor" href="assets/img/real/04-kazarma-vnutri-1600.webp" data-cap="Казарма. Койки заправлены по уставу."><img src="assets/img/real/04-kazarma-vnutri-800.webp" alt="Казарма изнутри. Кадр из игры." width="800" height="450" loading="lazy"><span class="monitor__cam">КАМ 06</span></a></li>
+        <li><a class="monitor" href="assets/img/real/02-baza-s-kholma-1600.webp" data-cap="База с холма. Отсюда видно, где ходят патрули."><img src="assets/img/real/02-baza-s-kholma-800.webp" alt="База с холма. Кадр из игры." width="800" height="450" loading="lazy"><span class="monitor__cam">КАМ 07</span></a></li>
+        <li><a class="monitor" href="assets/img/real/07-patrul-u-sklada-1600.webp" data-cap="Склад 18. Патруль ходит своим маршрутом — запомни его."><img src="assets/img/real/07-patrul-u-sklada-800.webp" alt="Патрульный у склада 18. Кадр из игры." width="800" height="450" loading="lazy"><span class="monitor__cam">КАМ 08</span></a></li>
+      </ul>
+      <div class="classified">
+        <span class="stamp stamp--red">Засекречено</span>
+        <p><b>Видеозапись.</b> Трейлер ещё в монтаже — покажем, когда будет что показать.</p>
       </div>
     </div>
   </section>
 
-  <section class="section section--steel" id="trailer" aria-labelledby="trailer-title">
-    <div class="wrap">
-      <div class="section__head">
-        <h2 id="trailer-title">Трейлер</h2>
+  <!-- ЖУРНАЛ ИЗМЕНЕНИЙ -->
+  <section class="sec" id="log" aria-labelledby="log-title" data-mark="Журнал">
+    <div class="wrap log">
+      <div class="head">
+        <p class="label">Обновление · ALPHA.11 · 8 октября 2026</p>
+        <h2 id="log-title">Что нового в сборке</h2>
       </div>
-      <div class="trailer">
-        <video controls preload="none" playsinline poster="assets/img/hero-poster.jpg">
-          <source src="trailer/snowops-trailer.mp4" type="video/mp4">
-          Ваш браузер не воспроизводит видео. <a href="trailer/snowops-trailer.mp4">Скачать трейлер</a>.
-        </video>
-      </div>
+      <ul class="log__list">
+        <li>Трос — тихий путь: издалека охрана только настораживается.</li>
+        <li>Интро: прыжок с рампы вертолёта на крышу поезда и рыбкой через ограду.</li>
+        <li>В кабине — команды выпускающего, ревун и «Пошёл!».</li>
+        <li>Снайперская винтовка СВД с оптическим прицелом.</li>
+        <li>Охрана находит тела товарищей, раненые отходят, посты докладывают по рации.</li>
+        <li>Журнал тревоги для тестеров: кто, откуда и почему тебя заметил.</li>
+      </ul>
+      <p class="log__more"><a href="https://github.com/Romaxa55/snowops-site/releases">Все изменения — на странице релизов →</a></p>
     </div>
   </section>
 
-  <section class="section" id="download" aria-labelledby="download-title">
+  <!-- СНАРЯЖЕНИЕ: скачать -->
+  <section class="sec sec--night" id="download" aria-labelledby="download-title" data-mark="Снаряжение">
     <div class="wrap">
-      <div class="section__head">
+      <div class="head">
+        <p class="label">Выбери снаряжение</p>
         <h2 id="download-title">Скачать демо</h2>
-        <p>Демо-сборка уже доступна для Android, Windows, Linux и macOS. Это ранняя версия для тестирования: может падать и тормозить, за это и нужны тестеры. Магазины появятся позже.</p>
+        <p>Демо-сборка уже доступна для Android, Windows, Linux и macOS. Это ранняя версия: может падать и тормозить — за этим и нужны тестеры. Магазины появятся позже.</p>
       </div>
-      <div class="alpha" id="alpha" data-repo="Romaxa55/snowops-site">
-        <h3>Демо-сборка</h3>
-        <p class="alpha__meta">Файлы для каждой платформы лежат в релизах на GitHub, рядом контрольные суммы и заметки к выпуску.</p>
-        <ul class="alpha__list stores">
-          <li>
-            <a class="store" href="https://github.com/Romaxa55/snowops-site/releases/latest">
-              <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 8v18m0 0-7-7m7 7 7-7"/><path d="M8 28v6a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2v-6"/></svg>
-              <span><b>Последняя сборка на GitHub</b><small>Android, Windows, Linux, macOS</small></span>
-            </a>
-          </li>
-        </ul>
-        <p class="alpha__how">Windows: запустите установщик (setup.exe); архив — если нужна переносная версия без установки. Android: разрешите установку из неизвестных источников и откройте APK. macOS: правый клик по приложению, «Открыть». Linux: в архиве два бинарника, x86_64 и arm64, и общий файл данных.</p>
-      </div>
-      <h3 class="stores-later">В магазинах: позже</h3>
-      <ul class="stores stores--muted">
-        <li>
-          <span class="store" aria-disabled="true">
-            <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 8v18m0 0-7-7m7 7 7-7"/><path d="M8 28v6a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2v-6"/></svg>
-            <span><b>Google Play</b><small>После теста</small></span>
-          </span>
+      <p class="rel" id="rel" data-repo="Romaxa55/snowops-site">Сборки для всех платформ — в <a href="https://github.com/Romaxa55/snowops-site/releases/latest">последнем релизе на GitHub</a>, рядом контрольные суммы.</p>
+      <ul class="loadout" id="loadout">
+        <li class="gear">
+          <p class="gear__slot">Слот 1</p>
+          <h3>Android</h3>
+          <dl><dt>Формат</dt><dd>APK, arm64</dd><dt>Система</dt><dd>Android 8.0 и новее</dd><dt>Размер</dt><dd data-size="android">—</dd></dl>
+          <p class="gear__how">Разрешите установку из неизвестных источников и откройте APK.</p>
+          <div class="gear__go"><a class="btn btn--go" data-file="android" href="https://github.com/Romaxa55/snowops-site/releases/latest">Взять</a></div>
         </li>
-        <li>
-          <span class="store" aria-disabled="true">
-            <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 8v18m0 0-7-7m7 7 7-7"/><path d="M8 28v6a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2v-6"/></svg>
-            <span><b>App Store</b><small>После теста</small></span>
-          </span>
+        <li class="gear">
+          <p class="gear__slot">Слот 2</p>
+          <h3>Windows</h3>
+          <dl><dt>Формат</dt><dd>установщик или zip, x86_64</dd><dt>Система</dt><dd>Windows 10 и новее</dd><dt>Размер</dt><dd data-size="windows-setup">—</dd></dl>
+          <p class="gear__how">Установщик — обычная установка; архив — переносная версия без установки.</p>
+          <div class="gear__go"><a class="btn btn--go" data-file="windows-setup" href="https://github.com/Romaxa55/snowops-site/releases/latest">Установщик</a><a class="btn" data-file="windows-zip" href="https://github.com/Romaxa55/snowops-site/releases/latest">Архив</a></div>
         </li>
-        <li>
-          <span class="store" aria-disabled="true">
-            <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 8v18m0 0-7-7m7 7 7-7"/><path d="M8 28v6a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2v-6"/></svg>
-            <span><b>RuStore</b><small>После теста</small></span>
-          </span>
+        <li class="gear">
+          <p class="gear__slot">Слот 3</p>
+          <h3>Linux</h3>
+          <dl><dt>Формат</dt><dd>tar.gz, x86_64 и arm64</dd><dt>Система</dt><dd>современный дистрибутив</dd><dt>Размер</dt><dd data-size="linux">—</dd></dl>
+          <p class="gear__how">В архиве два бинарника, x86_64 и arm64, и общий файл данных.</p>
+          <div class="gear__go"><a class="btn btn--go" data-file="linux" href="https://github.com/Romaxa55/snowops-site/releases/latest">Взять</a></div>
+        </li>
+        <li class="gear">
+          <p class="gear__slot">Слот 4</p>
+          <h3>macOS</h3>
+          <dl><dt>Формат</dt><dd>zip, universal</dd><dt>Система</dt><dd>macOS 11 и новее</dd><dt>Размер</dt><dd data-size="macos">—</dd></dl>
+          <p class="gear__how">Правый клик по приложению → «Открыть»: сборка без нотаризации Apple.</p>
+          <div class="gear__go"><a class="btn btn--go" data-file="macos" href="https://github.com/Romaxa55/snowops-site/releases/latest">Взять</a></div>
         </li>
       </ul>
-      <p class="download__note"><strong>Поделиться игрой:</strong> <a href="android.html">snowops.game/android.html</a> — страница с QR-кодом, которая всегда ведёт на последнюю сборку для Android.</p>
-      <p class="download__note">Ошибки, вылеты и предложения присылайте на <a href="mailto:support@snowops.game">support@snowops.game</a> или в <a href="https://github.com/Romaxa55/snowops-site/issues">Issues на GitHub</a>. Укажите устройство, версию системы и версию игры из названия файла.</p>
+      <div class="later">
+        <p class="label">В магазинах: позже</p>
+        <ul><li>Google Play <span>после теста</span></li><li>App Store <span>после теста</span></li><li>RuStore <span>после теста</span></li></ul>
+      </div>
+      <div class="notes">
+        <p><b>Поделиться игрой:</b> <a href="android.html">snowops.game/android.html</a> — страница с QR-кодом, которая всегда ведёт на последнюю сборку для Android.</p>
+        <p>Ошибки, вылеты и предложения присылайте на <a href="mailto:support@snowops.game">support@snowops.game</a> или в <a href="https://github.com/Romaxa55/snowops-site/issues">Issues на GitHub</a>. Укажите устройство, версию системы и версию игры из названия файла.</p>
+      </div>
     </div>
   </section>
 
 </main>
 
-<footer class="footer">
+<footer class="end">
   <div class="wrap">
-    <div class="footer__row">
-      <ul class="footer__links">
-        <li><a href="privacy.html">Политика конфиденциальности</a></li>
-        <li><a href="terms.html">Пользовательское соглашение</a></li>
-        <li><a href="data-deletion.html">Удаление данных</a></li>
-        <li><a href="support.html">Поддержка</a></li>
-      </ul>
-      <span class="age" title="Возрастная категория 16+">16+</span>
-    </div>
-    <p class="footer__legal">© 2026 SnowOps. Все права на игру, её название и материалы сайта принадлежат разработчику. Google Play, App Store и RuStore являются товарными знаками их правообладателей.</p>
+    <p class="end__title">Конец досье</p>
+    <ul class="end__links">
+      <li><a href="privacy.html">Политика конфиденциальности</a></li>
+      <li><a href="terms.html">Пользовательское соглашение</a></li>
+      <li><a href="data-deletion.html">Удаление данных</a></li>
+      <li><a href="support.html">Поддержка</a></li>
+    </ul>
+    <p class="end__legal">© 2026 SnowOps. Все права на игру, её название и материалы сайта принадлежат разработчику. Google Play, App Store и RuStore являются товарными знаками их правообладателей. <span class="age" title="Возрастная категория 16+">16+</span></p>
   </div>
 </footer>
 
-<script src="assets/js/site.js" defer></script>
-<script src="assets/js/releases.js" defer></script>
+<!-- Просмотр кадра на весь экран -->
+<div class="view" id="view" role="dialog" aria-modal="true" aria-label="Кадр из игры" hidden>
+  <figure class="view__frame monitor">
+    <img id="view-img" src="" alt="">
+    <div class="monitor__ui"><span class="monitor__rec"><i></i>REC</span><span class="monitor__cam" id="view-cam"></span></div>
+    <figcaption id="view-cap"></figcaption>
+  </figure>
+  <button class="view__btn view__prev" type="button" data-step="-1" aria-label="Предыдущий кадр">←</button>
+  <button class="view__btn view__next" type="button" data-step="1" aria-label="Следующий кадр">→</button>
+  <button class="view__close" type="button" aria-label="Закрыть">Esc</button>
+</div>
+
+<script src="assets/js/game.js?v=11g" defer></script>
 </body>
 </html>

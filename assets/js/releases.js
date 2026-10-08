@@ -54,12 +54,14 @@
     return /^https:\/\/github\.com\/[^/]+\/[^/]+\/releases\/download\//.test(url);
   }
 
-  fetch('https://api.github.com/repos/' + repo + '/releases?per_page=5', {
+  fetch('https://api.github.com/repos/' + repo + '/releases?per_page=15', {
     headers: { Accept: 'application/vnd.github+json' }
   })
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function (releases) {
-      var rel = (releases || []).filter(function (r) { return !r.draft; })[0];
+      /* Свежий — по дате публикации, а не первый в ответе (там порядок по коммиту тега). */
+      var rel = (releases || []).filter(function (r) { return !r.draft && r.published_at; })
+        .sort(function (a, b) { return Date.parse(b.published_at) - Date.parse(a.published_at); })[0];
       if (!rel) return;
 
       var frag = document.createDocumentFragment();
