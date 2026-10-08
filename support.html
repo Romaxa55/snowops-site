@@ -18,34 +18,28 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="stylesheet" href="assets/css/fonts.css">
-  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="stylesheet" href="assets/css/fonts-geist.css?v=16e">
+  <link rel="stylesheet" href="assets/css/game.css?v=16e">
+  <link rel="stylesheet" href="assets/css/doc.css?v=16e">
 </head>
-<body class="page-legal">
+<body class="doc">
 
-<nav class="nav" id="nav" aria-label="Основная навигация">
-  <div class="wrap">
-    <a class="brand" href="index.html" aria-label="SnowOps, на главную">
-      <span class="brand__mark">
-        <img src="assets/img/icon-192.png" alt="" width="34" height="34">
-        <span class="brand__beacon" aria-hidden="true"></span>
-      </span>
-      SnowOps
-    </a>
-    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links">Меню</button>
-    <ul class="nav__links" id="nav-links">
-      <li><a href="index.html#about">Об игре</a></li>
-      <li><a href="index.html#download">Скачать</a></li>
-      <li><a href="privacy.html">Конфиденциальность</a></li>
-      <li><a href="terms.html">Соглашение</a></li>
-      <li><a href="data-deletion.html">Удаление данных</a></li>
-      <li class="nav__lang"><a href="en/support.html" hreflang="en" lang="en">English</a></li>
-    </ul>
-  </div>
-</nav>
+<header class="top">
+  <a class="top__logo" href="index.html" aria-label="Главное меню">SNOWOPS<i></i></a>
+  <nav class="tabs" aria-label="Разделы">
+    <a class="tab" href="index.html#briefing">Брифинг</a>
+    <a class="tab" href="index.html#intel">Охрана</a>
+    <a class="tab" href="index.html#recon">Разведка</a>
+    <a class="tab" href="index.html#log">Журнал</a>
+    <a class="tab tab--go" href="index.html#download">Скачать</a>
+  </nav>
+  <a class="top__back" href="index.html"><span>Меню</span></a>
+</header>
 
 <main>
   <header class="legal-hero">
     <div class="wrap">
+      <p class="label">Документ · SnowOps</p>
       <h1>Поддержка</h1>
       <p>Нашли ошибку, игра не запускается или есть идея? Напишите нам, мы читаем всё и отвечаем в течение нескольких рабочих дней.</p>
     </div>
@@ -101,21 +95,20 @@
   </section>
 </main>
 
-<footer class="footer">
+<footer class="end">
   <div class="wrap">
-    <div class="footer__row">
-      <ul class="footer__links">
-        <li><a href="privacy.html">Политика конфиденциальности</a></li>
-        <li><a href="terms.html">Пользовательское соглашение</a></li>
-        <li><a href="data-deletion.html">Удаление данных</a></li>
-        <li><a href="support.html">Поддержка</a></li>
-      </ul>
-      <span class="age" title="Возрастная категория 16+">16+</span>
-    </div>
-    <p class="footer__legal">© 2026 SnowOps. Все права на игру, её название и материалы сайта принадлежат разработчику. Google Play, App Store и RuStore являются товарными знаками их правообладателей.</p>
+    <p class="end__title">Конец документа</p>
+    <ul class="end__links">
+      <li><a href="index.html">Главная</a></li>
+      <li><a href="support.html" aria-current="page">Поддержка</a></li>
+      <li><a href="privacy.html">Политика конфиденциальности</a></li>
+      <li><a href="terms.html">Пользовательское соглашение</a></li>
+      <li><a href="data-deletion.html">Удаление данных</a></li>
+      <li><a href="android.html">Android по QR</a></li>
+      <li><a href="en/support.html" aria-current="page" hreflang="en" lang="en">English</a></li>
+    </ul>
+    <p class="end__legal">© 2026 SnowOps. Все права на игру, её название и материалы сайта принадлежат разработчику. Google Play, App Store и RuStore являются товарными знаками их правообладателей. <span class="age">16+</span></p>
   </div>
 </footer>
-
-<script src="assets/js/site.js" defer></script>
 </body>
 </html>
