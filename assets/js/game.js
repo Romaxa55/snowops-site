@@ -162,6 +162,46 @@
   });
   var marks = all('span', strip), goals = all('#hud-goals li'), barGoal = $('bar-goal');
 
+  /* ---------- СМЕНА СЦЕНЫ: титр и расшифровка заголовка ---------- */
+  var scene = $('scene'), sceneNum = $('scene-num'), sceneName = $('scene-name');
+  var lastCur = -2, sceneTimer = 0, sceneQueued = -1, sceneBusy = false;
+  var GLYPHS = 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ0123456789#%&/<>';
+  function decode(h) {
+    if (!h || reduce) return;
+    var text = h.getAttribute('data-text') || h.textContent;
+    h.setAttribute('data-text', text);
+    h.setAttribute('aria-label', text);
+    var t0 = performance.now(), dur = 700;
+    function f(now) {
+      var k = Math.min(1, (now - t0) / dur), out = '';
+      for (var i = 0; i < text.length; i++) {
+        var c = text.charAt(i);
+        out += (c === ' ' || c === '.' || i / text.length < k) ? c : GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length));
+      }
+      h.textContent = out;
+      if (k < 1) requestAnimationFrame(f); else h.textContent = text;
+    }
+    requestAnimationFrame(f);
+  }
+  function playScene(i) {
+    if (reduce) return;
+    if (sceneBusy) { sceneQueued = i; return; }
+    sceneBusy = true;
+    sceneNum.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(secs.length).padStart(2, '0');
+    sceneName.textContent = secs[i].getAttribute('data-mark');
+    scene.classList.remove('is-on');
+    void scene.offsetWidth;
+    scene.classList.add('is-on');
+    decode(secs[i].querySelector('h2'));
+    clearTimeout(sceneTimer);
+    sceneTimer = setTimeout(function () {
+      scene.classList.remove('is-on');
+      sceneBusy = false;
+      if (sceneQueued >= 0 && sceneQueued !== i) { var q = sceneQueued; sceneQueued = -1; playScene(q); }
+      else sceneQueued = -1;
+    }, 1150);
+  }
+
   function hudTick() {
     var vh = window.innerHeight, mid = vh * 0.45, cur = -1, frac = 0;
     secs.forEach(function (s, i) {
@@ -176,6 +216,10 @@
       g.classList.toggle('is-now', i === cur);
     });
     secNum.textContent = String(Math.max(0, cur + 1)).padStart(2, '0');
+    if (cur !== lastCur) {
+      if (cur >= 0 && lastCur !== -2) playScene(cur);
+      lastCur = cur;
+    }
     var g = goals[Math.max(0, cur)];
     if (barGoal && g) barGoal.textContent = g.textContent.charAt(0).toLowerCase() + g.textContent.slice(1);
   }
@@ -232,7 +276,14 @@
       }
     }
     hudTick();
+    heroPush();
     if (!running && level > 0) { running = true; lastT = now; requestAnimationFrame(eyeLoop); }
+  }
+  var title = document.querySelector('.title');
+  function heroPush() {
+    if (reduce || !title) return;
+    var p = Math.min(1, Math.max(0, window.scrollY / Math.max(1, title.offsetHeight)));
+    title.style.setProperty('--hp', p.toFixed(3));
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', hudTick);
@@ -245,6 +296,8 @@
   function pick(li) {
     if (li.classList.contains('is-on')) return;
     items.forEach(function (it) { it.classList.toggle('is-on', it === li); });
+    screen.classList.remove('is-switch');
+    void screen.offsetWidth;
     screen.classList.add('is-switch');
     var src = 'assets/img/real/' + li.getAttribute('data-shot') + '-1600.webp';
     var img = new Image();
@@ -255,7 +308,7 @@
       var mood = li.getAttribute('data-mood');
       sMood.textContent = mood;
       sMood.className = 'monitor__mood' + (mood === '!' ? ' is-alert' : mood === '·' ? ' is-calm' : '');
-      setTimeout(function () { screen.classList.remove('is-switch'); }, 60);
+      setTimeout(function () { screen.classList.remove('is-switch'); }, 340);
     };
     img.src = src;
   }

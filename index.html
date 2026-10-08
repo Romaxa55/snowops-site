@@ -26,8 +26,8 @@
   <link rel="preload" href="assets/img/real/01-radiovyshka-i-baza-1600.webp" as="image" type="image/webp" media="(min-width: 801px)">
   <link rel="preload" href="assets/img/real/01-radiovyshka-i-baza-800.webp" as="image" type="image/webp" media="(max-width: 800px)">
   <link rel="stylesheet" href="assets/css/fonts.css">
-  <link rel="stylesheet" href="assets/css/fonts-geist.css?v=11g">
-  <link rel="stylesheet" href="assets/css/game.css?v=11g">
+  <link rel="stylesheet" href="assets/css/fonts-geist.css?v=12a">
+  <link rel="stylesheet" href="assets/css/game.css?v=12a">
   <script>document.documentElement.className = 'js';</script>
 
   <script type="application/ld+json">
@@ -83,6 +83,16 @@
   </div>
   <div class="hud__ammo"><b id="hud-sec">00</b><span>/</span><span id="hud-total">05</span></div>
   <div class="hud__toast" id="hud-toast"></div>
+</div>
+
+<!-- СМЕНА СЦЕНЫ: титр раздела при входе в него (game.js). -->
+<div class="scene" id="scene" aria-hidden="true">
+  <div class="scene__sweep"></div>
+  <div class="scene__band">
+    <span class="scene__num" id="scene-num">01 / 05</span>
+    <span class="scene__name" id="scene-name">Брифинг</span>
+    <span class="scene__load"><i></i></span>
+  </div>
 </div>
 
 <header class="bar" id="bar">
@@ -212,6 +222,7 @@
         </ol>
         <div class="intel__screen monitor" id="intel-screen" aria-live="polite">
           <img id="intel-img" src="assets/img/real/10-boets-s-avtomatom-1600.webp" alt="" width="1600" height="900" loading="lazy">
+          <i class="monitor__noise" aria-hidden="true"></i>
           <div class="monitor__ui">
             <span class="monitor__rec"><i></i>REC</span>
             <span class="monitor__cam" id="intel-cam">КАМ 01 · КПП</span>
@@ -350,6 +361,6 @@
   <button class="view__close" type="button" aria-label="Закрыть">Esc</button>
 </div>
 
-<script src="assets/js/game.js?v=11g" defer></script>
+<script src="assets/js/game.js?v=12a" defer></script>
 </body>
 </html>
