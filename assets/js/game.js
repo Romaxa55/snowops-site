@@ -160,7 +160,9 @@
       if (t && !t.contains(e.relatedTarget)) tick();
     });
     paint();
-    return { play: play, tick: tick, hiss: hiss, chatter: chatter };
+    /* Ролик на экране «Трейлер» со своим звуком: музыка меню уступает ему и возвращается после. */
+    function duck(d) { if (d) musicStop(); else musicStart(); }
+    return { play: play, tick: tick, hiss: hiss, chatter: chatter, duck: duck };
   })();
 
   /* ---------- ЗАГРУЗКА МИССИИ ---------- */
@@ -239,7 +241,14 @@
   /* ---------- ЭКРАНЫ ---------- */
   var screens = {};
   all('.screen').forEach(function (s) { screens[s.id] = s; });
-  var ORDER = ['briefing', 'intel', 'recon', 'log', 'download'];
+  /* ---------- ТРЕЙЛЕР ---------- */
+  var trailerVideo = document.getElementById('trailer-video');
+  if (trailerVideo) {
+    trailerVideo.addEventListener('play', function () { SND.duck(true); });
+    trailerVideo.addEventListener('pause', function () { SND.duck(false); });
+    trailerVideo.addEventListener('ended', function () { SND.duck(false); });
+  }
+  var ORDER = ['trailer', 'briefing', 'intel', 'recon', 'log', 'download'];
   var cur = null, busy = false, queued = null;
   var scene = $('scene'), sceneNum = $('scene-num'), sceneName = $('scene-name');
   var tabs = all('.tab'), goals = all('.goals li');
@@ -281,6 +290,7 @@
     tabs.forEach(function (t) { t.classList.toggle('is-on', t.getAttribute('data-go') === id); });
     if (!reduce) { void next.offsetWidth; next.classList.add('is-enter'); setTimeout(function () { next.classList.remove('is-enter'); }, 1200); }
     if (id === 'recon' || id === 'intel') setTimeout(function () { SND.hiss(0.4, 0.14, 2400); }, 160);
+    if (id !== 'trailer' && trailerVideo && !trailerVideo.paused) trailerVideo.pause();
     if (id !== 'menu') {
       visited[id] = 1;
       if (store) store.setItem('snowops-goals', JSON.stringify(visited));
