@@ -351,7 +351,7 @@ h2 { margin-top: 10px; font: 700 clamp(30px, 4.4vw, 56px)/1.02 var(--brand); let
 
 /* ================= РАЗВЕДКА ================= */
 .trailer { max-width: 1180px; margin: 0 auto; box-shadow: 0 30px 80px rgba(0, 0, 0, .45); }
-.trailer video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #000; }
+.trailer video { display: block; width: 100%; height: auto; aspect-ratio: 1920 / 804; background: #000; }
 .recon { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .5fr); gap: 14px; align-items: start; }
 .recon__main { box-shadow: 0 30px 80px rgba(0, 0, 0, .45); cursor: zoom-in; }
 .recon__main figcaption { position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; padding: 40px 24px 18px; background: linear-gradient(0deg, rgba(4, 8, 14, .9), transparent); font: 500 14px/1.4 var(--mono); letter-spacing: .03em; }
